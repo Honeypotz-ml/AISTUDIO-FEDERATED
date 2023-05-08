@@ -6,6 +6,6 @@ export default makeStyles((theme) => ({
     fontWeight: 'bold',
   },
   widgetTextCount: {
-    fontSize: '2.5rem',
-  },
+    fontSize: '2.5rem'
+  }
 }));

@@ -17,14 +17,14 @@ const actions = {
         type: 'DEPLOYMENT_FORM_FIND_STARTED',
       });
 
-      axios.get(`/deployment/${id}`).then((res) => {
+      axios.get(`/deployment/${id}`).then(res => {
         const record = res.data;
 
         dispatch({
           type: 'DEPLOYMENT_FORM_FIND_SUCCESS',
           payload: record,
         });
-      });
+      })
     } catch (error) {
       Errors.handle(error);
 
@@ -42,13 +42,13 @@ const actions = {
         type: 'DEPLOYMENT_FORM_CREATE_STARTED',
       });
 
-      axios.post('/deployment', { data: values }).then((res) => {
+      axios.post('/deployment', { data: values }).then(res => {
         dispatch({
           type: 'DEPLOYMENT_FORM_CREATE_SUCCESS',
         });
         showSnackbar({ type: 'success', message: 'Deployment created' });
         dispatch(push('/admin/deployment'));
-      });
+      })
     } catch (error) {
       Errors.handle(error);
 
@@ -58,13 +58,16 @@ const actions = {
     }
   },
 
-  doUpdate: (id, values, isProfile) => async (dispatch, getState) => {
+  doUpdate: (id, values, isProfile) => async (
+    dispatch,
+    getState,
+  ) => {
     try {
       dispatch({
         type: 'DEPLOYMENT_FORM_UPDATE_STARTED',
       });
 
-      await axios.put(`/deployment/${id}`, { id, data: values });
+      await axios.put(`/deployment/${id}`, {id, data: values});
 
       dispatch(doInit());
 

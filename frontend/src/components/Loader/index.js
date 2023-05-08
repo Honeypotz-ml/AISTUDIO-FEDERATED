@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 class Loader extends React.Component {
   static propTypes = {
@@ -14,7 +14,7 @@ class Loader extends React.Component {
     return (
       <div>
         <i
-          className='la la-spinner la-spin'
+          className="la la-spinner la-spin"
           style={{ fontSize: this.props.size }}
         />
       </div>

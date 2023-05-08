@@ -1,97 +1,204 @@
+
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
 const Utils = require('../utils');
 
-const bcrypt = require('bcrypt');
-const config = require('../../config');
+  const bcrypt = require('bcrypt');
+  const config = require('../../config');
 
 const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class UsersDBApi {
+
   static async create(data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
-    const transaction = (options && options.transaction) || undefined;
+  const currentUser = (options && options.currentUser) || { id: null };
+  const transaction = (options && options.transaction) || undefined;
 
-    const users = await db.users.create(
-      {
-        id: data.data.id || undefined,
+  const users = await db.users.create(
+  {
+  id: data.data.id || undefined,
 
-        firstName: data.data.firstName || null,
-        lastName: data.data.lastName || null,
-        phoneNumber: data.data.phoneNumber || null,
-        email: data.data.email || null,
-        role: data.data.role || 'user',
+    firstName: data.data.firstName
+    ||
+    null
+,
 
-        disabled: data.data.disabled || false,
+    lastName: data.data.lastName
+    ||
+    null
+,
 
-        password: data.data.password || null,
-        emailVerified: data.data.emailVerified || true,
+    phoneNumber: data.data.phoneNumber
+    ||
+    null
+,
 
-        emailVerificationToken: data.data.emailVerificationToken || null,
-        emailVerificationTokenExpiresAt:
-          data.data.emailVerificationTokenExpiresAt || null,
-        passwordResetToken: data.data.passwordResetToken || null,
-        passwordResetTokenExpiresAt:
-          data.data.passwordResetTokenExpiresAt || null,
-        provider: data.data.provider || null,
-        importHash: data.data.importHash || null,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
-      },
-      { transaction },
-    );
+    email: data.data.email
+    ||
+    null
+,
+
+    role: data.data.role
+    ||
+    'user'
+
+,
+
+    disabled: data.data.disabled
+    ||
+    false
+
+,
+
+    password: data.data.password
+    ||
+    null
+,
+
+    emailVerified: data.data.emailVerified
+    ||
+    true
+
+,
+
+    emailVerificationToken: data.data.emailVerificationToken
+    ||
+    null
+,
+
+    emailVerificationTokenExpiresAt: data.data.emailVerificationTokenExpiresAt
+    ||
+    null
+,
+
+    passwordResetToken: data.data.passwordResetToken
+    ||
+    null
+,
+
+    passwordResetTokenExpiresAt: data.data.passwordResetTokenExpiresAt
+    ||
+    null
+,
+
+    provider: data.data.provider
+    ||
+    null
+,
+
+  importHash: data.data.importHash || null,
+  createdById: currentUser.id,
+  updatedById: currentUser.id,
+  },
+  { transaction },
+  );
 
     await FileDBApi.replaceRelationFiles(
-      {
-        belongsTo: db.users.getTableName(),
-        belongsToColumn: 'avatar',
-        belongsToId: users.id,
-      },
-      data.data.avatar,
-      options,
+    {
+    belongsTo: db.users.getTableName(),
+    belongsToColumn: 'avatar',
+    belongsToId: users.id,
+    },
+    data.data.avatar,
+    options,
     );
 
-    return users;
+  return users;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const users = await db.users.findByPk(id, {
       transaction,
     });
 
-    if (data.password) {
-      data.password = bcrypt.hashSync(data.password, config.bcrypt.saltRounds);
-    } else {
-      data.password = users.password;
-    }
+      if (data.password) {
+        data.password = bcrypt.hashSync(
+          data.password,
+          config.bcrypt.saltRounds,
+        );
+      } else {
+        data.password = users.password;
+      }
 
     await users.update(
       {
-        firstName: data.firstName || null,
-        lastName: data.lastName || null,
-        phoneNumber: data.phoneNumber || null,
-        email: data.email || null,
-        role: data.role || 'user',
 
-        disabled: data.disabled || false,
+        firstName: data.firstName
+        ||
+        null
+,
 
-        password: data.password || null,
-        emailVerified: data.emailVerified || true,
+        lastName: data.lastName
+        ||
+        null
+,
 
-        emailVerificationToken: data.emailVerificationToken || null,
-        emailVerificationTokenExpiresAt:
-          data.emailVerificationTokenExpiresAt || null,
-        passwordResetToken: data.passwordResetToken || null,
-        passwordResetTokenExpiresAt: data.passwordResetTokenExpiresAt || null,
-        provider: data.provider || null,
+        phoneNumber: data.phoneNumber
+        ||
+        null
+,
+
+        email: data.email
+        ||
+        null
+,
+
+        role: data.role
+        ||
+        'user'
+
+,
+
+        disabled: data.disabled
+        ||
+        false
+
+,
+
+        password: data.password
+        ||
+        null
+,
+
+        emailVerified: data.emailVerified
+        ||
+        true
+
+,
+
+        emailVerificationToken: data.emailVerificationToken
+        ||
+        null
+,
+
+        emailVerificationTokenExpiresAt: data.emailVerificationTokenExpiresAt
+        ||
+        null
+,
+
+        passwordResetToken: data.passwordResetToken
+        ||
+        null
+,
+
+        passwordResetTokenExpiresAt: data.passwordResetTokenExpiresAt
+        ||
+        null
+,
+
+        provider: data.provider
+        ||
+        null
+,
+
         updatedById: currentUser.id,
       },
-      { transaction },
+      {transaction},
     );
 
     await FileDBApi.replaceRelationFiles(
@@ -108,22 +215,19 @@ module.exports = class UsersDBApi {
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const users = await db.users.findByPk(id, options);
 
-    await users.update(
-      {
-        deletedBy: currentUser.id,
-      },
-      {
-        transaction,
-      },
-    );
+    await users.update({
+      deletedBy: currentUser.id
+    }, {
+      transaction,
+    });
 
     await users.destroy({
-      transaction,
+      transaction
     });
 
     return users;
@@ -132,16 +236,19 @@ module.exports = class UsersDBApi {
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
 
-    const users = await db.users.findOne({ where }, { transaction });
+    const users = await db.users.findOne(
+      { where },
+      { transaction },
+    );
 
     if (!users) {
       return users;
     }
 
-    const output = users.get({ plain: true });
+    const output = users.get({plain: true});
 
     output.avatar = await users.getAvatar({
-      transaction,
+      transaction
     });
 
     return output;
@@ -159,10 +266,12 @@ module.exports = class UsersDBApi {
     const transaction = (options && options.transaction) || undefined;
     let where = {};
     let include = [
+
       {
         model: db.file,
         as: 'avatar',
       },
+
     ];
 
     if (filter) {
@@ -176,35 +285,55 @@ module.exports = class UsersDBApi {
       if (filter.firstName) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('users', 'firstName', filter.firstName),
+          [Op.and]: Utils.ilike(
+            'users',
+            'firstName',
+            filter.firstName,
+          ),
         };
       }
 
       if (filter.lastName) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('users', 'lastName', filter.lastName),
+          [Op.and]: Utils.ilike(
+            'users',
+            'lastName',
+            filter.lastName,
+          ),
         };
       }
 
       if (filter.phoneNumber) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('users', 'phoneNumber', filter.phoneNumber),
+          [Op.and]: Utils.ilike(
+            'users',
+            'phoneNumber',
+            filter.phoneNumber,
+          ),
         };
       }
 
       if (filter.email) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('users', 'email', filter.email),
+          [Op.and]: Utils.ilike(
+            'users',
+            'email',
+            filter.email,
+          ),
         };
       }
 
       if (filter.password) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('users', 'password', filter.password),
+          [Op.and]: Utils.ilike(
+            'users',
+            'password',
+            filter.password,
+          ),
         };
       }
 
@@ -233,7 +362,11 @@ module.exports = class UsersDBApi {
       if (filter.provider) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('users', 'provider', filter.provider),
+          [Op.and]: Utils.ilike(
+            'users',
+            'provider',
+            filter.provider,
+          ),
         };
       }
 
@@ -293,7 +426,9 @@ module.exports = class UsersDBApi {
       ) {
         where = {
           ...where,
-          active: filter.active === true || filter.active === 'true',
+          active:
+            filter.active === true ||
+            filter.active === 'true',
         };
       }
 
@@ -343,39 +478,35 @@ module.exports = class UsersDBApi {
       }
     }
 
-    let { rows, count } = options?.countOnly
-      ? {
-          rows: [],
-          count: await db.users.count({
+    let { rows, count } = options?.countOnly ? {rows: [], count: await db.users.count({
             where,
             include,
             distinct: true,
             limit: limit ? Number(limit) : undefined,
             offset: offset ? Number(offset) : undefined,
-            order:
-              filter.field && filter.sort
+            order: (filter.field && filter.sort)
                 ? [[filter.field, filter.sort]]
                 : [['createdAt', 'desc']],
             transaction,
-          }),
-        }
-      : await db.users.findAndCountAll({
-          where,
-          include,
-          distinct: true,
-          limit: limit ? Number(limit) : undefined,
-          offset: offset ? Number(offset) : undefined,
-          order:
-            filter.field && filter.sort
-              ? [[filter.field, filter.sort]]
-              : [['createdAt', 'desc']],
-          transaction,
-        });
+        },
+    )} : await db.users.findAndCountAll(
+        {
+            where,
+            include,
+            distinct: true,
+            limit: limit ? Number(limit) : undefined,
+            offset: offset ? Number(offset) : undefined,
+            order: (filter.field && filter.sort)
+                ? [[filter.field, filter.sort]]
+                : [['createdAt', 'desc']],
+            transaction,
+        },
+    );
 
-    //    rows = await this._fillWithRelationsAndFilesForRows(
-    //      rows,
-    //      options,
-    //    );
+//    rows = await this._fillWithRelationsAndFilesForRows(
+//      rows,
+//      options,
+//    );
 
     return { rows, count };
   }
@@ -387,13 +518,17 @@ module.exports = class UsersDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('users', 'firstName', query),
+          Utils.ilike(
+            'users',
+            'firstName',
+            query,
+          ),
         ],
       };
     }
 
     const records = await db.users.findAll({
-      attributes: ['id', 'firstName'],
+      attributes: [ 'id', 'firstName' ],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['firstName', 'ASC']],
@@ -450,19 +585,11 @@ module.exports = class UsersDBApi {
   }
 
   static async generateEmailVerificationToken(email, options) {
-    return this._generateToken(
-      ['emailVerificationToken', 'emailVerificationTokenExpiresAt'],
-      email,
-      options,
-    );
+    return this._generateToken(['emailVerificationToken', 'emailVerificationTokenExpiresAt'], email, options);
   }
 
   static async generatePasswordResetToken(email, options) {
-    return this._generateToken(
-      ['passwordResetToken', 'passwordResetTokenExpiresAt'],
-      email,
-      options,
-    );
+    return this._generateToken(['passwordResetToken', 'passwordResetTokenExpiresAt'], email, options);
   }
 
   static async findByPasswordResetToken(token, options) {
@@ -481,7 +608,10 @@ module.exports = class UsersDBApi {
     );
   }
 
-  static async findByEmailVerificationToken(token, options) {
+  static async findByEmailVerificationToken(
+    token,
+    options,
+  ) {
     const transaction = (options && options.transaction) || undefined;
     return db.users.findOne(
       {
@@ -516,7 +646,7 @@ module.exports = class UsersDBApi {
   }
 
   static async _generateToken(keyNames, email, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
     const users = await db.users.findOne(
       {
@@ -527,20 +657,24 @@ module.exports = class UsersDBApi {
       },
     );
 
-    const token = crypto.randomBytes(20).toString('hex');
+    const token = crypto
+      .randomBytes(20)
+      .toString('hex');
     const tokenExpiresAt = Date.now() + 360000;
 
-    if (users) {
-      await users.update(
-        {
-          [keyNames[0]]: token,
-          [keyNames[1]]: tokenExpiresAt,
-          updatedById: currentUser.id,
-        },
-        { transaction },
-      );
+    if(users){
+        await users.update(
+          {
+            [keyNames[0]]: token,
+            [keyNames[1]]: tokenExpiresAt,
+            updatedById: currentUser.id,
+          },
+          {transaction},
+        );
     }
 
     return token;
   }
+
 };
+

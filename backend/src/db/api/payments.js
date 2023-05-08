@@ -1,3 +1,4 @@
+
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -7,26 +8,27 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class PaymentsDBApi {
+
   static async create(data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
-    const transaction = (options && options.transaction) || undefined;
+  const currentUser = (options && options.currentUser) || { id: null };
+  const transaction = (options && options.transaction) || undefined;
 
-    const payments = await db.payments.create(
-      {
-        id: data.id || undefined,
+  const payments = await db.payments.create(
+  {
+  id: data.id || undefined,
 
-        importHash: data.importHash || null,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
-      },
-      { transaction },
-    );
+  importHash: data.importHash || null,
+  createdById: currentUser.id,
+  updatedById: currentUser.id,
+  },
+  { transaction },
+  );
 
-    return payments;
+  return payments;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const payments = await db.payments.findByPk(id, {
@@ -35,31 +37,29 @@ module.exports = class PaymentsDBApi {
 
     await payments.update(
       {
+
         updatedById: currentUser.id,
       },
-      { transaction },
+      {transaction},
     );
 
     return payments;
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const payments = await db.payments.findByPk(id, options);
 
-    await payments.update(
-      {
-        deletedBy: currentUser.id,
-      },
-      {
-        transaction,
-      },
-    );
+    await payments.update({
+      deletedBy: currentUser.id
+    }, {
+      transaction,
+    });
 
     await payments.destroy({
-      transaction,
+      transaction
     });
 
     return payments;
@@ -68,13 +68,16 @@ module.exports = class PaymentsDBApi {
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
 
-    const payments = await db.payments.findOne({ where }, { transaction });
+    const payments = await db.payments.findOne(
+      { where },
+      { transaction },
+    );
 
     if (!payments) {
       return payments;
     }
 
-    const output = payments.get({ plain: true });
+    const output = payments.get({plain: true});
 
     return output;
   }
@@ -90,7 +93,9 @@ module.exports = class PaymentsDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [];
+    let include = [
+
+    ];
 
     if (filter) {
       if (filter.id) {
@@ -108,7 +113,9 @@ module.exports = class PaymentsDBApi {
       ) {
         where = {
           ...where,
-          active: filter.active === true || filter.active === 'true',
+          active:
+            filter.active === true ||
+            filter.active === 'true',
         };
       }
 
@@ -137,39 +144,35 @@ module.exports = class PaymentsDBApi {
       }
     }
 
-    let { rows, count } = options?.countOnly
-      ? {
-          rows: [],
-          count: await db.payments.count({
+    let { rows, count } = options?.countOnly ? {rows: [], count: await db.payments.count({
             where,
             include,
             distinct: true,
             limit: limit ? Number(limit) : undefined,
             offset: offset ? Number(offset) : undefined,
-            order:
-              filter.field && filter.sort
+            order: (filter.field && filter.sort)
                 ? [[filter.field, filter.sort]]
                 : [['createdAt', 'desc']],
             transaction,
-          }),
-        }
-      : await db.payments.findAndCountAll({
-          where,
-          include,
-          distinct: true,
-          limit: limit ? Number(limit) : undefined,
-          offset: offset ? Number(offset) : undefined,
-          order:
-            filter.field && filter.sort
-              ? [[filter.field, filter.sort]]
-              : [['createdAt', 'desc']],
-          transaction,
-        });
+        },
+    )} : await db.payments.findAndCountAll(
+        {
+            where,
+            include,
+            distinct: true,
+            limit: limit ? Number(limit) : undefined,
+            offset: offset ? Number(offset) : undefined,
+            order: (filter.field && filter.sort)
+                ? [[filter.field, filter.sort]]
+                : [['createdAt', 'desc']],
+            transaction,
+        },
+    );
 
-    //    rows = await this._fillWithRelationsAndFilesForRows(
-    //      rows,
-    //      options,
-    //    );
+//    rows = await this._fillWithRelationsAndFilesForRows(
+//      rows,
+//      options,
+//    );
 
     return { rows, count };
   }
@@ -181,13 +184,17 @@ module.exports = class PaymentsDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('payments', 'id', query),
+          Utils.ilike(
+            'payments',
+            'id',
+            query,
+          ),
         ],
       };
     }
 
     const records = await db.payments.findAll({
-      attributes: ['id', 'id'],
+      attributes: [ 'id', 'id' ],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -198,4 +205,6 @@ module.exports = class PaymentsDBApi {
       label: record.id,
     }));
   }
+
 };
+

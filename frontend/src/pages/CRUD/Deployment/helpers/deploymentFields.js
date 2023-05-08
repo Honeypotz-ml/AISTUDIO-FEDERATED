@@ -1,5 +1,7 @@
+
 const deploymentFields = {
-  id: { type: 'id', label: 'ID' },
-};
+	id: { type: 'id', label: 'ID' },
+
+}
 
 export default deploymentFields;

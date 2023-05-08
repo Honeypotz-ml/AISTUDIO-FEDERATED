@@ -8,7 +8,8 @@ module.exports = class ForbiddenError extends Error {
       message = getNotification(messageCode);
     }
 
-    message = message || getNotification('errors.forbidden.message');
+    message =
+      message || getNotification('errors.forbidden.message');
 
     super(message);
     this.code = 403;

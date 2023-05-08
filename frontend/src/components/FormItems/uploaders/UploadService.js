@@ -1,6 +1,6 @@
-import * as uuid from 'uuid/v4';
-import Axios from 'axios';
-import config from 'config';
+import * as uuid from "uuid/v4";
+import Axios from "axios";
+import config from "config";
 
 function extractExtensionFrom(filename) {
   if (!filename) {
@@ -18,19 +18,19 @@ export default class FileUploader {
     }
 
     if (schema.image) {
-      if (!file.type.startsWith('image')) {
-        throw new Error('You must upload an image');
+      if (!file.type.startsWith("image")) {
+        throw new Error("You must upload an image");
       }
     }
 
     if (schema.size && file.size > schema.size) {
-      throw new Error('File is too big.');
+      throw new Error("File is too big.");
     }
 
     const extension = extractExtensionFrom(file.name);
 
     if (schema.formats && !schema.formats.includes(extension)) {
-      throw new Error('Invalid format');
+      throw new Error("Invalid format");
     }
   }
 
@@ -60,12 +60,12 @@ export default class FileUploader {
 
   static async uploadToServer(file, path, filename) {
     const formData = new FormData();
-    formData.append('file', file);
-    formData.append('filename', filename);
+    formData.append("file", file);
+    formData.append("filename", filename);
     const uri = `/file/upload/${path}`;
     await Axios.post(uri, formData, {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        "Content-Type": "multipart/form-data",
       },
     });
 

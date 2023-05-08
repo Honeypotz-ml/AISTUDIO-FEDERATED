@@ -7,6 +7,6 @@ const Model_exchangeTablePage = () => {
       <Model_exchangeTable />
     </div>
   );
-};
+}
 
 export default Model_exchangeTablePage;

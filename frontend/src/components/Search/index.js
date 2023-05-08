@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import classNames from 'classnames';
-import { Search as SearchIcon } from '@mui/icons-material';
-import { InputBase } from '@mui/material';
+import React, {useState} from "react";
+import classNames from "classnames";
+import {Search as SearchIcon} from "@mui/icons-material";
+import { InputBase } from "@mui/material";
 import { withStyles } from '@mui/styles';
-import { alpha } from '@mui/material/styles';
+import { alpha } from '@mui/material/styles'
 
 const styles = (theme) => ({
   root: {
@@ -88,7 +88,8 @@ const Search = ({ classes }) => {
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
 export default withStyles(styles)(Search);
+

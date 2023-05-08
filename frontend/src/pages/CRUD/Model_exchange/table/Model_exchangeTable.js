@@ -3,14 +3,14 @@ import * as dataFormat from 'pages/CRUD/Model_exchange/table/Model_exchangeDataF
 
 import actions from 'actions/model_exchange/model_exchangeListActions';
 import React, { useRef } from 'react';
-import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import {Link} from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
 import { useHistory } from 'react-router';
-import { uniqueId } from 'lodash';
+import {uniqueId} from 'lodash';
 import { withStyles } from '@mui/styles';
-import { makeStyles } from '@mui/styles';
-import { DataGrid } from '@mui/x-data-grid';
-import { Link as LinkMaterial } from '../../../../components/Wrappers';
+import {makeStyles} from "@mui/styles";
+import { DataGrid } from "@mui/x-data-grid";
+import { Link as LinkMaterial} from '../../../../components/Wrappers';
 import axios from 'axios';
 
 import IconButton from '@mui/material/IconButton';
@@ -20,18 +20,18 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import CloseIcon from '@mui/icons-material/Close';
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import TextField from "@mui/material/TextField";
+import Grid from "@mui/material/Grid";
+import CloseIcon from "@mui/icons-material/Close";
 import Stack from '@mui/material/Stack';
 import LinearProgress from '@mui/material/LinearProgress';
 
 import Widget from 'components/Widget';
 import Actions from '../../../../components/Table/Actions';
-import Dialog from '../../../../components/Dialog';
+import Dialog from "../../../../components/Dialog";
 
 const useStyles = makeStyles({
   container: {
@@ -49,7 +49,7 @@ const useStyles = makeStyles({
   },
   element: {
     marginRight: '1rem',
-  },
+  }
 });
 
 const Model_exchangeTable = () => {
@@ -59,7 +59,9 @@ const Model_exchangeTable = () => {
   const linkCsvDownload = useRef(null);
   const [width, setWidth] = React.useState(window.innerWidth);
 
-  const [filters, setFilters] = React.useState([]);
+  const [filters, setFilters] = React.useState([
+
+  ]);
 
   const [filterItems, setFilterItems] = React.useState([]);
   const [filterUrl, setFilterUrl] = React.useState('');
@@ -71,9 +73,7 @@ const Model_exchangeTable = () => {
   const count = useSelector((store) => store.model_exchange.list.count);
   const modalOpen = useSelector((store) => store.model_exchange.list.modalOpen);
   const rows = useSelector((store) => store.model_exchange.list.rows);
-  const idToDelete = useSelector(
-    (store) => store.model_exchange.list.idToDelete,
-  );
+  const idToDelete = useSelector((store) => store.model_exchange.list.idToDelete);
 
   const [rowsState, setRowsState] = React.useState({
     page: 0,
@@ -84,7 +84,7 @@ const Model_exchangeTable = () => {
     setLoading(true);
     await dispatch(actions.doFetch({ limit, page, orderBy, request }));
     setLoading(false);
-  };
+  }
 
   React.useEffect(() => {
     loadData(rowsState.pageSize, rowsState.page, sortModel[0], filterUrl);
@@ -94,109 +94,95 @@ const Model_exchangeTable = () => {
     updateWindowDimensions();
     window.addEventListener('resize', updateWindowDimensions);
     return () => window.removeEventListener('resize', updateWindowDimensions);
-  }, []);
+  }, [])
 
   const handleSortModelChange = (newModel) => {
     setSortModel(newModel);
   };
 
   const updateWindowDimensions = () => {
-    setWidth(window.innerWidth);
-  };
+    setWidth(window.innerWidth)
+  }
 
   const handleChange = (id) => (e) => {
     const value = e.target.value;
     const name = e.target.name;
 
-    setFilterItems(
-      filterItems.map((item) =>
-        item.id === id
-          ? { id, fields: { ...item.fields, [name]: value } }
-          : item,
-      ),
-    );
+    setFilterItems(filterItems.map(item =>
+      item.id === id ? { id, fields: { ...item.fields, [name]: value }} : item
+    ));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     let request = '&';
-    filterItems.forEach((item) => {
-      filters[
-        filters.map((filter) => filter.title).indexOf(item.fields.selectedField)
-      ].hasOwnProperty('number')
-        ? (request += `${item.fields.selectedField}Range=${item.fields.filterValueFrom}&${item.fields.selectedField}Range=${item.fields.filterValueTo}&`)
-        : (request += `${item.fields.selectedField}=${item.fields.filterValue}&`);
-    });
+    filterItems.forEach(item => {
+      filters[filters.map(filter => filter.title).indexOf(item.fields.selectedField)].hasOwnProperty('number')
+      ? request += `${item.fields.selectedField}Range=${item.fields.filterValueFrom}&${item.fields.selectedField}Range=${item.fields.filterValueTo}&`
+      : request += `${item.fields.selectedField}=${item.fields.filterValue}&`
+      })
 
     loadData(rowsState.pageSize, 0, sortModel[0], request);
     setFilterUrl(request);
   };
 
   const handleReset = () => {
-    setFilterItems([]);
+    setFilterItems([])
     setFilterUrl('');
-    dispatch(
-      actions.doFetch({ limit: rowsState.pageSize, page: 0, request: '' }),
-    );
-  };
+    dispatch(actions.doFetch({limit: rowsState.pageSize, page: 0, request: '' }));
+  }
 
   const getModel_exchangeCSV = async () => {
-    const response = await axios({
-      url: '/model_exchange?filetype=csv',
-      method: 'GET',
-      responseType: 'blob',
-    });
-    const type = response.headers['content-type'];
-    const blob = new Blob([response.data], { type: type, encoding: 'UTF-8' });
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = 'model_exchangeCSV.csv';
-    link.click();
+    const response = await axios({url: '/model_exchange?filetype=csv', method: 'GET',responseType: 'blob'});
+    const type = response.headers['content-type']
+    const blob = new Blob([response.data], { type: type, encoding: 'UTF-8' })
+    const link = document.createElement('a')
+    link.href = window.URL.createObjectURL(blob)
+    link.download = 'model_exchangeCSV.csv'
+    link.click()
   };
 
   const addFilter = () => {
     let newItem = {
-      id: uniqueId(),
-      fields: {
-        filterValue: '',
-        filterValueFrom: '',
-        filterValueTo: '',
-      },
-    };
+        id: uniqueId(),
+        fields: {
+          filterValue: "",
+          filterValueFrom: "",
+          filterValueTo: "",
+        }
+    }
     newItem.fields.selectedField = filters[0].title;
-    setFilterItems([...filterItems, newItem]);
-  };
+    setFilterItems([...filterItems, newItem])
+  }
 
   const deleteFilter = (value) => (e) => {
     e.preventDefault();
     const newItems = filterItems.filter((item) => item.id !== value);
     if (newItems.length) {
-      setFilterItems(newItems);
+        setFilterItems(newItems);
     } else {
-      dispatch(actions.doFetch({ limit: 10, page: 1 }));
-      setFilterItems(newItems);
+        dispatch(actions.doFetch({limit: 10, page: 1}));
+        setFilterItems(newItems);
     }
-  };
+  }
 
   const handleDelete = () => {
-    dispatch(
-      actions.doDelete({ limit: 10, page: 0, request: filterUrl }, idToDelete),
-    );
-  };
+    dispatch(actions.doDelete({ limit: 10, page: 0, request: filterUrl }, idToDelete));
+  }
 
   const openModal = (event, cell) => {
     const id = cell;
     event.stopPropagation();
     dispatch(actions.doOpenConfirm(id));
-  };
+  }
 
   const closeModal = () => {
     dispatch(actions.doCloseConfirm());
-  };
+  }
 
   function NoRowsOverlay() {
     return (
-      <Stack height='100%' alignItems='center' justifyContent='center'>
+      <Stack height="100%" alignItems="center" justifyContent="center">
         No results found
       </Stack>
     );
@@ -204,52 +190,39 @@ const Model_exchangeTable = () => {
 
   function humanize(str) {
     return str
-      .replace(/^[\s_]+|[\s_]+$/g, '')
-      .replace(/[_\s]+/g, ' ')
-      .replace(/^[a-z]/, function (m) {
-        return m.toUpperCase();
-      });
+        .replace(/^[\s_]+|[\s_]+$/g, '')
+        .replace(/[_\s]+/g, ' ')
+        .replace(/^[a-z]/, function(m) { return m.toUpperCase(); });
   }
 
   const columns = [
-    {
-      field: 'id',
-      headerName: 'Actions',
-      sortable: false,
-      flex: 0.6,
-      maxWidth: 80,
-      renderCell: (params) => (
-        <Actions
-          classes={classes}
-          entity='model_exchange'
-          openModal={openModal}
-          {...params}
-        />
-      ),
-    },
+
+      {
+        field: 'id',
+        headerName: 'Actions',
+        sortable: false,
+        flex: 0.6,
+        maxWidth: 80,
+        renderCell: (params) => <Actions classes={classes} entity="model_exchange" openModal={openModal} {...params} />,
+      }
   ];
 
   return (
     <div>
       <Widget title={<h4>{humanize('Model_exchange')}</h4>} disableWidgetMenu>
         <Box className={classes.actions}>
-          <Link to='/admin/model_exchange/new' className={classes.element}>
+          <Link to="/admin/model_exchange/new" className={classes.element}>
             <Button variant='contained'>New</Button>
           </Link>
           <Button
             type='button'
-            variant='contained'
+            variant="contained"
             className={classes.element}
             onClick={addFilter}
           >
             Add Filter
           </Button>
-          <Button
-            type='button'
-            variant='contained'
-            onClick={getModel_exchangeCSV}
-            className={classes.element}
-          >
+          <Button type='button' variant='contained' onClick={getModel_exchangeCSV} className={classes.element}>
             Export CSV
           </Button>
         </Box>
@@ -258,18 +231,18 @@ const Model_exchangeTable = () => {
           {filterItems.map((item) => (
             <Grid
               container
-              alignItems='center'
+              alignItems="center"
               columns={12}
               spacing={1}
               className={classes.container}
             >
               <Grid item xs={3}>
-                <FormControl size='small' fullWidth>
+                <FormControl size="small" fullWidth>
                   <InputLabel>Field</InputLabel>
                   <Select
-                    label='Field'
+                    label="Field"
                     name='selectedField'
-                    size='small'
+                    size="small"
                     value={item.fields.selectedField}
                     onChange={handleChange(item.id)}
                   >
@@ -284,26 +257,24 @@ const Model_exchangeTable = () => {
                   </Select>
                 </FormControl>
               </Grid>
-              {filters
-                .find((filter) => filter.title === item.fields.selectedField)
-                .hasOwnProperty('number') ? (
+              {filters.find(filter => filter.title === item.fields.selectedField).hasOwnProperty('number') ? (
                 <>
                   <Grid item xs={2}>
                     <TextField
-                      label='From'
+                      label="From"
                       type='text'
                       name='filterValueFrom'
-                      size='small'
+                      size="small"
                       fullWidth
                       onChange={handleChange(item.id)}
                     />
                   </Grid>
                   <Grid item xs={2}>
                     <TextField
-                      label='To'
+                      label="To"
                       type='text'
                       name='filterValueTo'
-                      size='small'
+                      size="small"
                       fullWidth
                       onChange={handleChange(item.id)}
                     />
@@ -312,10 +283,10 @@ const Model_exchangeTable = () => {
               ) : (
                 <Grid item xs={4}>
                   <TextField
-                    label='Contained'
+                    label="Contained"
                     type='text'
                     name='filterValue'
-                    size='small'
+                    size="small"
                     fullWidth
                     onChange={handleChange(item.id)}
                   />
@@ -324,8 +295,8 @@ const Model_exchangeTable = () => {
 
               <Grid item xs={2}>
                 <Button
-                  variant='outlined'
-                  color='error'
+                  variant="outlined"
+                  color="error"
                   onClick={deleteFilter(item.id)}
                 >
                   <CloseIcon />
@@ -336,12 +307,19 @@ const Model_exchangeTable = () => {
           {filterItems.length > 0 && (
             <Grid container spacing={1}>
               <Grid item>
-                <Button variant='outlined' onClick={(e) => handleSubmit(e)}>
+                <Button
+                  variant="outlined"
+                  onClick={(e) => handleSubmit(e)}
+                >
                   Apply
                 </Button>
               </Grid>
               <Grid item>
-                <Button color='error' variant='outlined' onClick={handleReset}>
+                <Button
+                  color="error"
+                  variant="outlined"
+                  onClick={handleReset}
+                >
                   Clear
                 </Button>
               </Grid>
@@ -349,44 +327,39 @@ const Model_exchangeTable = () => {
           )}
         </Box>
 
-        <div
-          style={{
-            minHeight: 500,
-            width: '100%',
-            paddingTop: 20,
-            paddingBottom: 20,
-          }}
-        >
+        <div style={{minHeight: 500, width: "100%", paddingTop: 20, paddingBottom: 20}}>
           <DataGrid
             rows={loading ? [] : rows}
             columns={columns}
-            sortingMode='server'
+            sortingMode="server"
             sortModel={sortModel}
             onSortModelChange={handleSortModelChange}
             rowsPerPageOptions={[5, 10, 20, 50, 100]}
             pageSize={5}
+
             pagination
             {...rowsState}
             rowCount={count}
-            paginationMode='server'
-            components={{ NoRowsOverlay, LoadingOverlay: LinearProgress }}
+            paginationMode="server"
+            components={{ NoRowsOverlay, LoadingOverlay: LinearProgress, }}
             onPageChange={(page) => {
-              setRowsState((prev) => ({ ...prev, page }));
+              setRowsState((prev) => ({ ...prev, page }))
             }}
             onPageSizeChange={(pageSize) => {
-              setRowsState((prev) => ({ ...prev, pageSize }));
-            }}
+              setRowsState((prev) => ({ ...prev, pageSize }))
+              }
+            }
+
             onSelectionModelChange={(newSelectionModel) => {
               setSelectionModel(newSelectionModel);
             }}
             selectionModel={selectionModel}
+
             checkboxSelection
             disableSelectionOnClick
             disableColumnMenu
             loading={loading}
-            onRowClick={(e) => {
-              history.push(`/admin/model_exchange/${e.id}/edit`);
-            }}
+            onRowClick={(e) => {history.push(`/admin/model_exchange/${e.id}/edit`)}}
             autoHeight
           />
         </div>
@@ -408,13 +381,13 @@ const Model_exchangeTable = () => {
 
       <Dialog
         open={modalOpen}
-        title='Confirm delete'
-        contentText='Are you sure you want to delete this item?'
+        title="Confirm delete"
+        contentText="Are you sure you want to delete this item?"
         onClose={closeModal}
         onSubmit={handleDelete}
       />
     </div>
-  );
-};
+  )
+}
 
 export default Model_exchangeTable;

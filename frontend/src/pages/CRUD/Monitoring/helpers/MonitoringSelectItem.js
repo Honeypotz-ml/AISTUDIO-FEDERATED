@@ -50,7 +50,10 @@ const MonitoringSelectItem = (props) => {
     },
   };
 
-  const { form, ...rest } = props;
+  const {
+    form,
+    ...rest
+  } = props;
 
   return (
     <React.Fragment>
@@ -63,10 +66,12 @@ const MonitoringSelectItem = (props) => {
       />
     </React.Fragment>
   );
-};
+}
 
 const select = (state) => ({
-  hasPermissionToCreate: state.monitoring.hasPermissionToCreate,
+  hasPermissionToCreate: state.monitoring.hasPermissionToCreate
 });
 
-export default connect(select)(MonitoringSelectItem);
+export default connect(select)(
+  MonitoringSelectItem,
+);

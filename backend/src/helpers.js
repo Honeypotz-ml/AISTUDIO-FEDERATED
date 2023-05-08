@@ -18,6 +18,6 @@ module.exports = class Helpers {
   }
 
   static jwtSign(data) {
-    return jwt.sign(data, config.secret_key, { expiresIn: '6h' });
-  }
+    return jwt.sign(data, config.secret_key, {expiresIn: '6h'});
+  };
 };

@@ -23,9 +23,9 @@ export default class FormErrors {
 
   static validateStatus(form, fieldName, externalErrorMessage) {
     if (this.displayableError(form, fieldName, externalErrorMessage)) {
-      return 'is-invalid';
+      return "is-invalid";
     }
 
-    return '';
+    return "";
   }
 }

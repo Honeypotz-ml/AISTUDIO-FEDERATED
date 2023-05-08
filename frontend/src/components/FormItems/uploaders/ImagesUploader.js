@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 import Dialog from '@mui/material/Dialog';
 import FileUploader from 'components/FormItems/uploaders/UploadService';
 import Errors from '../../../components/FormItems/error/errors';
-import { makeStyles } from '@mui/styles';
+import {makeStyles} from "@mui/styles";
 
 const useStyles = makeStyles({
   actionButtonsWrapper: {
@@ -54,7 +54,7 @@ const useStyles = makeStyles({
       stroke: '#909090',
       strokeWidth: 0.5,
     },
-  },
+  }
 });
 
 const ImagesUploader = (props) => {
@@ -134,9 +134,12 @@ const ImagesUploader = (props) => {
 
   const uploadButton = (
     <Box>
-      <label htmlFor={'button-file-' + name} style={{ cursor: 'pointer' }}>
+      <label
+        htmlFor={"button-file-" + name}
+        style={{ cursor: 'pointer' }}
+      >
         <input
-          id={'button-file-' + name}
+          id={"button-file-" + name}
           style={{ display: 'none' }}
           disabled={loading || readonly}
           accept='image/*'
@@ -144,9 +147,9 @@ const ImagesUploader = (props) => {
           onChange={handleChange}
           ref={inputElement}
         />
-        <Button variant='contained' component='span'>
+        <Button variant="contained" component="span">
           Upload an Image
-        </Button>{' '}
+        </Button>{" "}
       </label>
     </Box>
   );
@@ -159,7 +162,11 @@ const ImagesUploader = (props) => {
         <Grid container>
           {valuesArr().map((item) => {
             return (
-              <Grid item className={classes.imageItem} key={item.id}>
+              <Grid
+                item
+                className={classes.imageItem}
+                key={item.id}
+              >
                 <img
                   alt={item.name}
                   src={item.publicUrl}
@@ -175,7 +182,7 @@ const ImagesUploader = (props) => {
                   <div className={classes.actionButtons}>
                     <Button
                       classes={{ root: classes.button }}
-                      variant='text'
+                      variant="text"
                       onClick={() => doPreviewImage(item)}
                     >
                       <SearchIcon />
@@ -183,7 +190,7 @@ const ImagesUploader = (props) => {
                     {!readonly && (
                       <Button
                         classes={{ root: classes.button }}
-                        variant='text'
+                        variant="text"
                         onClick={() => handleRemove(item.id)}
                       >
                         <CloseIcon />
@@ -201,7 +208,10 @@ const ImagesUploader = (props) => {
         onClose={doCloseImageModal}
         classes={{ root: classes.previewContainer }}
       >
-        <Button variant='text' onClick={() => doCloseImageModal()}>
+        <Button
+          variant="text"
+          onClick={() => doCloseImageModal()}
+        >
           <CloseIcon />
         </Button>
         <img src={imageMeta.imageSrc} alt={imageMeta.imageAlt} />

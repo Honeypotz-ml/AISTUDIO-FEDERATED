@@ -1,3 +1,5 @@
+
+
 module.exports = {
   production: {
     dialect: 'postgres',
@@ -17,5 +19,5 @@ module.exports = {
     host: process.env.DEV_DB_HOST || 'localhost',
     logging: console.log,
     seederStorage: 'sequelize',
-  },
+  }
 };

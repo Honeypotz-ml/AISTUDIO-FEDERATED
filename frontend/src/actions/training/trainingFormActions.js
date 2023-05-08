@@ -17,14 +17,14 @@ const actions = {
         type: 'TRAINING_FORM_FIND_STARTED',
       });
 
-      axios.get(`/training/${id}`).then((res) => {
+      axios.get(`/training/${id}`).then(res => {
         const record = res.data;
 
         dispatch({
           type: 'TRAINING_FORM_FIND_SUCCESS',
           payload: record,
         });
-      });
+      })
     } catch (error) {
       Errors.handle(error);
 
@@ -42,13 +42,13 @@ const actions = {
         type: 'TRAINING_FORM_CREATE_STARTED',
       });
 
-      axios.post('/training', { data: values }).then((res) => {
+      axios.post('/training', { data: values }).then(res => {
         dispatch({
           type: 'TRAINING_FORM_CREATE_SUCCESS',
         });
         showSnackbar({ type: 'success', message: 'Training created' });
         dispatch(push('/admin/training'));
-      });
+      })
     } catch (error) {
       Errors.handle(error);
 
@@ -58,13 +58,16 @@ const actions = {
     }
   },
 
-  doUpdate: (id, values, isProfile) => async (dispatch, getState) => {
+  doUpdate: (id, values, isProfile) => async (
+    dispatch,
+    getState,
+  ) => {
     try {
       dispatch({
         type: 'TRAINING_FORM_UPDATE_STARTED',
       });
 
-      await axios.put(`/training/${id}`, { id, data: values });
+      await axios.put(`/training/${id}`, {id, data: values});
 
       dispatch(doInit());
 

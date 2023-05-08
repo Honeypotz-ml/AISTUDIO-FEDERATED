@@ -7,6 +7,6 @@ const ProjectsTablePage = () => {
       <ProjectsTable />
     </div>
   );
-};
+}
 
 export default ProjectsTablePage;

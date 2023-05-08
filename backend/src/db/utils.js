@@ -15,7 +15,10 @@ module.exports = class Utils {
 
   static ilike(model, column, value) {
     return Sequelize.where(
-      Sequelize.fn('lower', Sequelize.col(`${model}.${column}`)),
+      Sequelize.fn(
+        'lower',
+        Sequelize.col(`${model}.${column}`),
+      ),
       {
         [Sequelize.Op.like]: `%${value}%`.toLowerCase(),
       },

@@ -176,17 +176,17 @@ export default function Header(props) {
           </MenuItem>
 
           <MenuItem
-            className={classNames(
-              classes.profileMenuItem,
-              classes.headerMenuItem,
-            )}
-            onClick={() => {
-              signOut(userDispatch, props.history);
-            }}
-          >
+              className={classNames(
+                  classes.profileMenuItem,
+                  classes.headerMenuItem,
+              )}
+              onClick={() => {signOut(userDispatch, props.history)}}>
             <Logout className={classes.profileMenuIcon} />
-            <Link style={{ textDecoration: 'none' }}>Sign Out</Link>
+            <Link style={{ textDecoration: 'none' }}>
+              Sign Out
+            </Link>
           </MenuItem>
+
         </Menu>
       </Toolbar>
     </AppBar>

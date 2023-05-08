@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 
-module.exports = function (sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
   const algorithms = sequelize.define(
     'algorithms',
     {
@@ -14,12 +14,14 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
       },
 
-      algorithm_name: {
+algorithm_name: {
         type: DataTypes.TEXT,
+
       },
 
-      description: {
+description: {
         type: DataTypes.TEXT,
+
       },
 
       importHash: {
@@ -36,6 +38,7 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   algorithms.associate = (db) => {
+
     db.algorithms.belongsToMany(db.teams, {
       as: 'teams',
       foreignKey: {
@@ -65,3 +68,4 @@ module.exports = function (sequelize, DataTypes) {
 
   return algorithms;
 };
+

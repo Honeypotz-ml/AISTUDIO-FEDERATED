@@ -1,3 +1,4 @@
+
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -7,26 +8,27 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class Model_exchangeDBApi {
+
   static async create(data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
-    const transaction = (options && options.transaction) || undefined;
+  const currentUser = (options && options.currentUser) || { id: null };
+  const transaction = (options && options.transaction) || undefined;
 
-    const model_exchange = await db.model_exchange.create(
-      {
-        id: data.id || undefined,
+  const model_exchange = await db.model_exchange.create(
+  {
+  id: data.id || undefined,
 
-        importHash: data.importHash || null,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
-      },
-      { transaction },
-    );
+  importHash: data.importHash || null,
+  createdById: currentUser.id,
+  updatedById: currentUser.id,
+  },
+  { transaction },
+  );
 
-    return model_exchange;
+  return model_exchange;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const model_exchange = await db.model_exchange.findByPk(id, {
@@ -35,31 +37,29 @@ module.exports = class Model_exchangeDBApi {
 
     await model_exchange.update(
       {
+
         updatedById: currentUser.id,
       },
-      { transaction },
+      {transaction},
     );
 
     return model_exchange;
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const model_exchange = await db.model_exchange.findByPk(id, options);
 
-    await model_exchange.update(
-      {
-        deletedBy: currentUser.id,
-      },
-      {
-        transaction,
-      },
-    );
+    await model_exchange.update({
+      deletedBy: currentUser.id
+    }, {
+      transaction,
+    });
 
     await model_exchange.destroy({
-      transaction,
+      transaction
     });
 
     return model_exchange;
@@ -77,7 +77,7 @@ module.exports = class Model_exchangeDBApi {
       return model_exchange;
     }
 
-    const output = model_exchange.get({ plain: true });
+    const output = model_exchange.get({plain: true});
 
     return output;
   }
@@ -93,7 +93,9 @@ module.exports = class Model_exchangeDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [];
+    let include = [
+
+    ];
 
     if (filter) {
       if (filter.id) {
@@ -111,7 +113,9 @@ module.exports = class Model_exchangeDBApi {
       ) {
         where = {
           ...where,
-          active: filter.active === true || filter.active === 'true',
+          active:
+            filter.active === true ||
+            filter.active === 'true',
         };
       }
 
@@ -140,39 +144,35 @@ module.exports = class Model_exchangeDBApi {
       }
     }
 
-    let { rows, count } = options?.countOnly
-      ? {
-          rows: [],
-          count: await db.model_exchange.count({
+    let { rows, count } = options?.countOnly ? {rows: [], count: await db.model_exchange.count({
             where,
             include,
             distinct: true,
             limit: limit ? Number(limit) : undefined,
             offset: offset ? Number(offset) : undefined,
-            order:
-              filter.field && filter.sort
+            order: (filter.field && filter.sort)
                 ? [[filter.field, filter.sort]]
                 : [['createdAt', 'desc']],
             transaction,
-          }),
-        }
-      : await db.model_exchange.findAndCountAll({
-          where,
-          include,
-          distinct: true,
-          limit: limit ? Number(limit) : undefined,
-          offset: offset ? Number(offset) : undefined,
-          order:
-            filter.field && filter.sort
-              ? [[filter.field, filter.sort]]
-              : [['createdAt', 'desc']],
-          transaction,
-        });
+        },
+    )} : await db.model_exchange.findAndCountAll(
+        {
+            where,
+            include,
+            distinct: true,
+            limit: limit ? Number(limit) : undefined,
+            offset: offset ? Number(offset) : undefined,
+            order: (filter.field && filter.sort)
+                ? [[filter.field, filter.sort]]
+                : [['createdAt', 'desc']],
+            transaction,
+        },
+    );
 
-    //    rows = await this._fillWithRelationsAndFilesForRows(
-    //      rows,
-    //      options,
-    //    );
+//    rows = await this._fillWithRelationsAndFilesForRows(
+//      rows,
+//      options,
+//    );
 
     return { rows, count };
   }
@@ -184,13 +184,17 @@ module.exports = class Model_exchangeDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('model_exchange', 'id', query),
+          Utils.ilike(
+            'model_exchange',
+            'id',
+            query,
+          ),
         ],
       };
     }
 
     const records = await db.model_exchange.findAll({
-      attributes: ['id', 'id'],
+      attributes: [ 'id', 'id' ],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -201,4 +205,6 @@ module.exports = class Model_exchangeDBApi {
       label: record.id,
     }));
   }
+
 };
+

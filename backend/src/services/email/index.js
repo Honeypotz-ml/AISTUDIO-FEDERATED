@@ -20,7 +20,9 @@ module.exports = class EmailSender {
     assert(this.email.subject, 'email.subject is required');
     assert(this.email.html, 'email.html is required');
 
-    const transporter = nodemailer.createTransport(this.transportConfig);
+    const transporter = nodemailer.createTransport(
+      this.transportConfig,
+    );
 
     const mailOptions = {
       from: this.from,

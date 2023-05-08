@@ -17,7 +17,9 @@ module.exports = class InvitationEmail {
     return getNotification(
       'emails.invitation.body',
       getNotification('app.title'),
-      `${config.uiUrl}/signup?email=${this.to}`,
+      `${config.uiUrl}/signup?email=${
+        this.to
+      }`,
     );
   }
 };

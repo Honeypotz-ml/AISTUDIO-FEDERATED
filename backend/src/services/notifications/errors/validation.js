@@ -8,7 +8,9 @@ module.exports = class ValidationError extends Error {
       message = getNotification(messageCode);
     }
 
-    message = message || getNotification('errors.validation.message');
+    message =
+      message ||
+      getNotification('errors.validation.message');
 
     super(message);
     this.code = 400;

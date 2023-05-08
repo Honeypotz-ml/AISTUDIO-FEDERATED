@@ -1,5 +1,5 @@
-import moment from 'moment';
-import * as yup from 'yup';
+import moment from "moment";
+import * as yup from "yup";
 
 const formValidations = (fields, record = {}) => {
   const yupArray = {};
@@ -9,61 +9,61 @@ const formValidations = (fields, record = {}) => {
     const required = fields[field].required;
     let yupConds = {};
     switch (type) {
-      case 'boolean':
+      case "boolean":
         yupConds = yup.bool().default(false);
         break;
 
-      case 'date':
+      case "date":
         yupConds = yup
           .mixed()
           .nullable(true)
-          .test('is-date', '', (value) => {
+          .test("is-date", "", (value) => {
             if (!value) {
               return true;
             }
-            return moment(value, 'YYYY-MM-DD').isValid();
+            return moment(value, "YYYY-MM-DD").isValid();
           });
         break;
 
-      case 'datetime':
+      case "datetime":
         yupConds = yup.mixed().nullable(true);
         break;
 
-      case 'decimal':
+      case "decimal":
         yupConds = yup.number().nullable(true);
         break;
 
-      case 'enum':
+      case "enum":
         yupConds = yup.string().nullable(true);
         break;
 
-      case 'files':
+      case "files":
         yupConds = yup.array().compact().ensure().nullable(true);
         break;
 
-      case 'images':
+      case "images":
         yupConds = yup.array().nullable(true);
         break;
 
-      case 'int':
+      case "int":
         yupConds = yup.number().integer().nullable(true);
         break;
 
-      case 'user_many':
-      case 'relation_many':
+      case "user_many":
+      case "relation_many":
         yupConds = yup.array().nullable(true);
         break;
 
-      case 'user_one':
-      case 'relation_one':
+      case "user_one":
+      case "relation_one":
         yupConds = yup.mixed().nullable(true);
         break;
 
-      case 'stringArray':
+      case "stringArray":
         yupConds = yup.array().compact().ensure().of(yup.string().trim());
         break;
 
-      case 'string':
+      case "string":
         yupConds = yup.string().nullable(true).trim();
         break;
 

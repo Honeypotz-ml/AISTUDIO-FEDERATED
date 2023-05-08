@@ -24,7 +24,7 @@ export default function MultipleSelectChip({
         ? form.values[name].map((value) => mapper.intoSelect(value))
         : mapper.intoSelect(form.values[name]);
     }
-    return multiple ? [] : '';
+    return multiple ? [] : "";
   }, [multiple, form.values]);
 
   const handleChange = (event, value) => {
@@ -40,29 +40,35 @@ export default function MultipleSelectChip({
       <Autocomplete
         fullWidth
         multiple={multiple}
-        id='tags-outlined'
+        id="tags-outlined"
         options={items || []}
         value={selected}
         onChange={handleChange}
         filterSelectedOptions
         isOptionEqualToValue={(option, value) => {
           if (option) {
-            return option.id === value.id;
+            return option.id === value.id
           }
         }}
         renderInput={(params) => (
-          <TextField {...params} label={label} placeholder={label} />
+          <TextField
+            {...params}
+            label={label}
+            placeholder={label}
+          />
         )}
-        ListboxProps={{
-          style: {
-            maxHeight: '250px',
-          },
-        }}
+        ListboxProps={
+          {
+            style:{
+              maxHeight: '250px',
+            }
+          }
+        }
       />
       <div className='invalid-feedback'>
         {FormErrors.displayableError(form, name, errorMessage)}
       </div>
       {!!hint && <small className='form-text text-muted'>{hint}</small>}
     </FormControl>
-  );
+  )
 }

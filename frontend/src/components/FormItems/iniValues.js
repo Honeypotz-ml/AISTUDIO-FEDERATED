@@ -1,54 +1,54 @@
-import moment from 'moment';
-import { isString } from 'lodash';
+import moment from "moment";
+import { isString } from "lodash";
 
 const IniValues = (fields, record = {}) => {
   const iniArray = {};
   Object.keys(fields).forEach((field) => {
     const type = fields[field].type;
     const value = record[field];
-    let showValue = '';
+    let showValue = "";
     switch (type) {
-      case 'boolean':
+      case "boolean":
         showValue = value;
         break;
 
-      case 'date':
-        showValue = value ? moment(value, 'YYYY-MM-DD').toDate() : null;
+      case "date":
+        showValue = value ? moment(value, "YYYY-MM-DD").toDate() : null;
         break;
 
-      case 'dateRange':
+      case "dateRange":
         if (!value || !value.length) {
           showValue = [];
         } else {
           showValue = value.map((item) =>
-            item ? moment(item, 'YYYY-MM-DD').toDate() : null,
+            item ? moment(item, "YYYY-MM-DD").toDate() : null
           );
         }
         break;
 
-      case 'datetime':
+      case "datetime":
         showValue = value ? moment(value).toDate() : null;
         break;
 
-      case 'datetimeRange':
+      case "datetimeRange":
         if (!value || !value.length) {
           showValue = [];
         } else {
           showValue = value.map((item) =>
-            item ? moment(item).toDate() : null,
+            item ? moment(item).toDate() : null
           );
         }
         break;
 
-      case 'decimal':
+      case "decimal":
         showValue = value;
         break;
 
-      case 'decimalRange':
+      case "decimalRange":
         showValue = value || [];
         break;
 
-      case 'enum':
+      case "enum":
         if (!value || isString(value)) {
           showValue = value;
         } else {
@@ -56,39 +56,39 @@ const IniValues = (fields, record = {}) => {
         }
         break;
 
-      case 'files':
+      case "files":
         showValue = value;
         break;
 
-      case 'images':
+      case "images":
         showValue = value;
         break;
 
-      case 'int':
+      case "int":
         showValue = value;
         break;
 
-      case 'intRange':
+      case "intRange":
         showValue = value;
         break;
 
-      case 'relation_many':
+      case "relation_many":
         showValue = value;
         break;
 
-      case 'relation_one':
+      case "relation_one":
         showValue = value;
         break;
 
-      case 'user_many':
+      case "user_many":
         showValue = value;
         break;
 
-      case 'user_one':
+      case "user_one":
         showValue = value;
         break;
 
-      case 'stringArray':
+      case "stringArray":
         if (!value) {
           showValue = [];
         } else if (Array.isArray(value)) {
@@ -98,7 +98,7 @@ const IniValues = (fields, record = {}) => {
         }
         break;
 
-      case 'string':
+      case "string":
         showValue = value;
         break;
 

@@ -7,6 +7,6 @@ const AlgorithmsTablePage = () => {
       <AlgorithmsTable />
     </div>
   );
-};
+}
 
 export default AlgorithmsTablePage;

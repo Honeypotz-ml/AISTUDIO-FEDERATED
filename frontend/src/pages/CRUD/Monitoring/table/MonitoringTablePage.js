@@ -7,6 +7,6 @@ const MonitoringTablePage = () => {
       <MonitoringTable />
     </div>
   );
-};
+}
 
 export default MonitoringTablePage;

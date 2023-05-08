@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import FormErrors from 'components/FormItems/formErrors';
 import { FastField } from 'formik';
 import TextField from '@mui/material/TextField';
-import { Editor } from '@tinymce/tinymce-react';
+import {Editor} from "@tinymce/tinymce-react";
 
 const InputFormItem = (props) => {
   const {
@@ -27,57 +27,54 @@ const InputFormItem = (props) => {
   return (
     <FastField name={name}>
       {({ form }) => {
-        if (!wysiwyg) {
-          return (
-            <>
-              <TextField
-                id='outlined-basic'
-                variant='outlined'
-                fullWidth
-                label={label}
-                multiline={multiline}
-                rows={multiline && 4}
-                onChange={(event) => {
-                  const errors = FormErrors.validateStatus(
-                    form,
-                    name,
-                    errorMessage,
-                  );
-                  form.setFieldValue(name, event.target.value);
-                  form.setFieldTouched(name);
-                }}
-                value={form.values[name] || ''}
-                placeholder={placeholder || undefined}
-                autoFocus={autoFocus || undefined}
-                autoComplete={autoComplete || undefined}
-                error={FormErrors.validateStatus(form, name, errorMessage)}
-                {...inputProps}
-              />
-              <div className='invalid-feedback'>
-                {FormErrors.displayableError(form, name, errorMessage)}
-              </div>
-              {!!hint && <small className='form-text text-muted'>{hint}</small>}
-            </>
-          );
+        if(!wysiwyg){
+          return (<>
+            <TextField
+              id='outlined-basic'
+              variant='outlined'
+              fullWidth
+              label={label}
+              multiline={multiline}
+              rows={multiline && 4}
+              onChange={(event) => {
+                const errors = FormErrors.validateStatus(
+                  form,
+                  name,
+                  errorMessage,
+                );
+                form.setFieldValue(name, event.target.value);
+                form.setFieldTouched(name);
+              }}
+              value={form.values[name] || ''}
+              placeholder={placeholder || undefined}
+              autoFocus={autoFocus || undefined}
+              autoComplete={autoComplete || undefined}
+              error={FormErrors.validateStatus(form, name, errorMessage)}
+              {...inputProps}
+            />
+            <div className='invalid-feedback'>
+              {FormErrors.displayableError(form, name, errorMessage)}
+            </div>
+            {!!hint && <small className='form-text text-muted'>{hint}</small>}
+          </>)
         } else {
-          return (
-            <>
-              <Editor
-                onEditorChange={(value) => {
-                  const errors = FormErrors.validateStatus(
-                    form,
-                    name,
-                    errorMessage,
-                  );
-                  form.setFieldValue(name, value);
-                  form.setFieldTouched(name);
-                }}
-                value={form.values[name] || ''}
-                apiKey={'s0bs8snu2u6qo8skn5r3kurkerhbaagpsgm9cdkbxnbo8nj4'}
-              />
-            </>
-          );
+          return (<>
+            <Editor
+              onEditorChange={(value) => {
+                const errors = FormErrors.validateStatus(
+                  form,
+                  name,
+                  errorMessage,
+                );
+                form.setFieldValue(name, value);
+                form.setFieldTouched(name);
+              }}
+              value={form.values[name] || ''}
+              apiKey={'s0bs8snu2u6qo8skn5r3kurkerhbaagpsgm9cdkbxnbo8nj4'}
+            />
+          </>)
         }
+
       }}
     </FastField>
   );

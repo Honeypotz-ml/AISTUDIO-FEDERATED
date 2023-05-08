@@ -7,6 +7,6 @@ const TrainingTablePage = () => {
       <TrainingTable />
     </div>
   );
-};
+}
 
 export default TrainingTablePage;

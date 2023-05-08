@@ -50,7 +50,10 @@ const DeploymentSelectItem = (props) => {
     },
   };
 
-  const { form, ...rest } = props;
+  const {
+    form,
+    ...rest
+  } = props;
 
   return (
     <React.Fragment>
@@ -63,10 +66,12 @@ const DeploymentSelectItem = (props) => {
       />
     </React.Fragment>
   );
-};
+}
 
 const select = (state) => ({
-  hasPermissionToCreate: state.deployment.hasPermissionToCreate,
+  hasPermissionToCreate: state.deployment.hasPermissionToCreate
 });
 
-export default connect(select)(DeploymentSelectItem);
+export default connect(select)(
+  DeploymentSelectItem,
+);

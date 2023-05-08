@@ -4,68 +4,64 @@
 
 ## To start the project:
 
-Install dependencies via npm or yarn
+  Install dependencies via npm or yarn
+  ```shell
+  npm install
+  ```
+  ```shell
+  yarn
+  ```
 
-```shell
-npm install
-```
+  Run development server
+  ```shell
+  yarn start
+  ```
 
-```shell
-yarn
-```
-
-Run development server
-
-```shell
-yarn start
-```
-
-## Support
-
-For any additional information please refer to [Flatlogic homepage](https://flatlogic.com).
+  ## Support
+  For any additional information please refer to [Flatlogic homepage](https://flatlogic.com).
 
 ## To start the project with Docker:
+  ## Description:
 
-## Description:
+  The project contains the **docker folder** and the `Dockerfile`.
 
-The project contains the **docker folder** and the `Dockerfile`.
+  The `Dockerfile` is used to Deploy the project to Google Cloud.
 
-The `Dockerfile` is used to Deploy the project to Google Cloud.
+  The **docker folder** contains a couple of helper scripts:
 
-The **docker folder** contains a couple of helper scripts:
+  - `docker-compose.yml` (all our services: web, backend, db are described here)
+  - `start-backend.sh` (starts backend, but only after the database)
+  - `wait-for-it.sh` (imported from https://github.com/vishnubob/wait-for-it)
 
-- `docker-compose.yml` (all our services: web, backend, db are described here)
-- `start-backend.sh` (starts backend, but only after the database)
-- `wait-for-it.sh` (imported from https://github.com/vishnubob/wait-for-it)
+      > To avoid breaking the application, we recommend you don't edit the following files: everything that includes the **docker folder** and `Dokerfile`.
 
-  > To avoid breaking the application, we recommend you don't edit the following files: everything that includes the **docker folder** and `Dokerfile`.
+  ## Run services:
 
-## Run services:
+  1. Install docker compose (https://docs.docker.com/compose/install/)
 
-1. Install docker compose (https://docs.docker.com/compose/install/)
+  2. Move to `docker` folder. All next steps should be done from this folder.
 
-2. Move to `docker` folder. All next steps should be done from this folder.
+     ``` cd docker ```
 
-   `cd docker`
+  3. Make executables from `wait-for-it.sh` and `start-backend.sh`:
 
-3. Make executables from `wait-for-it.sh` and `start-backend.sh`:
+     ``` chmod +x start-backend.sh && chmod +x wait-for-it.sh ```
 
-   `chmod +x start-backend.sh && chmod +x wait-for-it.sh`
+  4. Download dependend projects for services.
 
-4. Download dependend projects for services.
+  5. Review the docker-compose.yml file. Make sure that all services have Dockerfiles. Only db service doesn't require a Dockerfile.
 
-5. Review the docker-compose.yml file. Make sure that all services have Dockerfiles. Only db service doesn't require a Dockerfile.
+  6. Make sure you have needed ports (see them in `ports`) available on your local machine.
 
-6. Make sure you have needed ports (see them in `ports`) available on your local machine.
+  7. Start services:
 
-7. Start services:
+     7.1. With an empty database `rm -rf data && docker-compose up`
 
-   7.1. With an empty database `rm -rf data && docker-compose up`
+     7.2. With a stored (from previus runs) database data `docker-compose up`
 
-   7.2. With a stored (from previus runs) database data `docker-compose up`
+  8. Check http://localhost:3000
 
-8. Check http://localhost:3000
+  9. Stop services:
 
-9. Stop services:
+     9.1. Just press `Ctr+C`
 
-   9.1. Just press `Ctr+C`

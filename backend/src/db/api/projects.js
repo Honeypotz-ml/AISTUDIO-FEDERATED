@@ -1,3 +1,4 @@
+
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -7,26 +8,27 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class ProjectsDBApi {
+
   static async create(data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
-    const transaction = (options && options.transaction) || undefined;
+  const currentUser = (options && options.currentUser) || { id: null };
+  const transaction = (options && options.transaction) || undefined;
 
-    const projects = await db.projects.create(
-      {
-        id: data.id || undefined,
+  const projects = await db.projects.create(
+  {
+  id: data.id || undefined,
 
-        importHash: data.importHash || null,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
-      },
-      { transaction },
-    );
+  importHash: data.importHash || null,
+  createdById: currentUser.id,
+  updatedById: currentUser.id,
+  },
+  { transaction },
+  );
 
-    return projects;
+  return projects;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const projects = await db.projects.findByPk(id, {
@@ -35,31 +37,29 @@ module.exports = class ProjectsDBApi {
 
     await projects.update(
       {
+
         updatedById: currentUser.id,
       },
-      { transaction },
+      {transaction},
     );
 
     return projects;
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const projects = await db.projects.findByPk(id, options);
 
-    await projects.update(
-      {
-        deletedBy: currentUser.id,
-      },
-      {
-        transaction,
-      },
-    );
+    await projects.update({
+      deletedBy: currentUser.id
+    }, {
+      transaction,
+    });
 
     await projects.destroy({
-      transaction,
+      transaction
     });
 
     return projects;
@@ -68,13 +68,16 @@ module.exports = class ProjectsDBApi {
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
 
-    const projects = await db.projects.findOne({ where }, { transaction });
+    const projects = await db.projects.findOne(
+      { where },
+      { transaction },
+    );
 
     if (!projects) {
       return projects;
     }
 
-    const output = projects.get({ plain: true });
+    const output = projects.get({plain: true});
 
     return output;
   }
@@ -90,7 +93,9 @@ module.exports = class ProjectsDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [];
+    let include = [
+
+    ];
 
     if (filter) {
       if (filter.id) {
@@ -108,7 +113,9 @@ module.exports = class ProjectsDBApi {
       ) {
         where = {
           ...where,
-          active: filter.active === true || filter.active === 'true',
+          active:
+            filter.active === true ||
+            filter.active === 'true',
         };
       }
 
@@ -137,39 +144,35 @@ module.exports = class ProjectsDBApi {
       }
     }
 
-    let { rows, count } = options?.countOnly
-      ? {
-          rows: [],
-          count: await db.projects.count({
+    let { rows, count } = options?.countOnly ? {rows: [], count: await db.projects.count({
             where,
             include,
             distinct: true,
             limit: limit ? Number(limit) : undefined,
             offset: offset ? Number(offset) : undefined,
-            order:
-              filter.field && filter.sort
+            order: (filter.field && filter.sort)
                 ? [[filter.field, filter.sort]]
                 : [['createdAt', 'desc']],
             transaction,
-          }),
-        }
-      : await db.projects.findAndCountAll({
-          where,
-          include,
-          distinct: true,
-          limit: limit ? Number(limit) : undefined,
-          offset: offset ? Number(offset) : undefined,
-          order:
-            filter.field && filter.sort
-              ? [[filter.field, filter.sort]]
-              : [['createdAt', 'desc']],
-          transaction,
-        });
+        },
+    )} : await db.projects.findAndCountAll(
+        {
+            where,
+            include,
+            distinct: true,
+            limit: limit ? Number(limit) : undefined,
+            offset: offset ? Number(offset) : undefined,
+            order: (filter.field && filter.sort)
+                ? [[filter.field, filter.sort]]
+                : [['createdAt', 'desc']],
+            transaction,
+        },
+    );
 
-    //    rows = await this._fillWithRelationsAndFilesForRows(
-    //      rows,
-    //      options,
-    //    );
+//    rows = await this._fillWithRelationsAndFilesForRows(
+//      rows,
+//      options,
+//    );
 
     return { rows, count };
   }
@@ -181,13 +184,17 @@ module.exports = class ProjectsDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('projects', 'id', query),
+          Utils.ilike(
+            'projects',
+            'id',
+            query,
+          ),
         ],
       };
     }
 
     const records = await db.projects.findAll({
-      attributes: ['id', 'id'],
+      attributes: [ 'id', 'id' ],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -198,4 +205,6 @@ module.exports = class ProjectsDBApi {
       label: record.id,
     }));
   }
+
 };
+

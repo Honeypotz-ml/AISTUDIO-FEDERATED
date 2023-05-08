@@ -1,13 +1,23 @@
+
 const algorithmsFields = {
-  id: { type: 'id', label: 'ID' },
+	id: { type: 'id', label: 'ID' },
 
-  algorithm_name: { type: 'string', label: 'AlgorithmName' },
+    algorithm_name: { type: 'string', label: 'AlgorithmName',
 
-  description: { type: 'string', label: 'Description' },
+    },
 
-  teams: { type: 'relation_many', label: 'Teams' },
+    description: { type: 'string', label: 'Description',
 
-  users: { type: 'relation_many', label: 'Users' },
-};
+    },
+
+    teams: { type: 'relation_many', label: 'Teams',
+
+    },
+
+    users: { type: 'relation_many', label: 'Users',
+
+    },
+
+}
 
 export default algorithmsFields;

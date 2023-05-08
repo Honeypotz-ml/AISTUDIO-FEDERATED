@@ -12,7 +12,7 @@ function imageFormatter(cell, key) {
 
   return (
     <Box
-      component='img'
+      component="img"
       sx={{
         height: 45,
         width: 45,
@@ -22,20 +22,24 @@ function imageFormatter(cell, key) {
       src={imageUrl}
     />
   );
-}
+};
 
 function booleanFormatter(cell) {
-  return cell ? 'Yes' : 'No';
-}
+    return cell
+      ? 'Yes'
+      : 'No';
+};
 
 function dateTimeFormatter(cell) {
-  return cell ? moment(cell).format('YYYY-MM-DD HH:mm') : null;
-}
+    return cell
+      ? moment(cell).format('YYYY-MM-DD HH:mm')
+      : null;
+};
 
 function filesFormatter(cell, key) {
   return (
     <div>
-      {cell && cell[key][0] && (
+      {cell && cell[key][0] &&
         <div key={cell[key][0].id}>
           <a
             href={cell[key][0].publicUrl}
@@ -46,10 +50,10 @@ function filesFormatter(cell, key) {
             {truncate(cell[key][0].name)}
           </a>
         </div>
-      )}
+      }
     </div>
   );
-}
+};
 
 function listFormatter(cell, history, entity) {
   if (!cell) return null;
@@ -67,22 +71,14 @@ function listFormatter(cell, history, entity) {
         {title}
       </LinkMaterial>
     </div>
-  );
+  )
 
   return (
     <div>
-      {cell &&
-        cell.length &&
-        cell.map((value) => getContent(value.id, value.firstName))}
+      {cell && cell.length && cell.map((value) => getContent(value.id, value.firstName))}
       {cell && getContent(cell.id, cell.firstName)}
     </div>
   );
 }
 
-export {
-  booleanFormatter,
-  imageFormatter,
-  dateTimeFormatter,
-  listFormatter,
-  filesFormatter,
-};
+export { booleanFormatter, imageFormatter, dateTimeFormatter, listFormatter, filesFormatter };

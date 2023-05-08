@@ -18,13 +18,11 @@ const RadioFormItem = (props) => {
       {({ form }) => (
         <>
           <FormControl>
-            <FormLabel id='demo-row-radio-buttons-group-label'>
-              {label}
-            </FormLabel>
+            <FormLabel id="demo-row-radio-buttons-group-label">{label}</FormLabel>
             <RadioGroup
               row
-              aria-labelledby='demo-row-radio-buttons-group-label'
-              name='row-radio-buttons-group'
+              aria-labelledby="demo-row-radio-buttons-group-label"
+              name="row-radio-buttons-group"
               onChange={(e) => {
                 form.setFieldValue(name, e.target.value);
                 form.setFieldTouched(name);
@@ -32,11 +30,7 @@ const RadioFormItem = (props) => {
               value={form.values[name] || ''}
             >
               {options.map((option) => (
-                <FormControlLabel
-                  value={option.value}
-                  control={<Radio />}
-                  label={option.label}
-                />
+                <FormControlLabel value={option.value} control={<Radio />} label={option.label} />
               ))}
             </RadioGroup>
           </FormControl>

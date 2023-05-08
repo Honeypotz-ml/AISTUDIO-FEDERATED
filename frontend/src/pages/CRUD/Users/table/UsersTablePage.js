@@ -7,6 +7,6 @@ const UsersTablePage = () => {
       <UsersTable />
     </div>
   );
-};
+}
 
 export default UsersTablePage;

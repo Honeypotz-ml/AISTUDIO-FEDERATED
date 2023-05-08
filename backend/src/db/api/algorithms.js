@@ -1,3 +1,4 @@
+
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -7,36 +8,45 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class AlgorithmsDBApi {
+
   static async create(data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
-    const transaction = (options && options.transaction) || undefined;
+  const currentUser = (options && options.currentUser) || { id: null };
+  const transaction = (options && options.transaction) || undefined;
 
-    const algorithms = await db.algorithms.create(
-      {
-        id: data.id || undefined,
+  const algorithms = await db.algorithms.create(
+  {
+  id: data.id || undefined,
 
-        algorithm_name: data.algorithm_name || null,
-        description: data.description || null,
-        importHash: data.importHash || null,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
-      },
-      { transaction },
-    );
+    algorithm_name: data.algorithm_name
+    ||
+    null
+,
+
+    description: data.description
+    ||
+    null
+,
+
+  importHash: data.importHash || null,
+  createdById: currentUser.id,
+  updatedById: currentUser.id,
+  },
+  { transaction },
+  );
 
     await algorithms.setTeams(data.teams || [], {
-      transaction,
+    transaction,
     });
 
     await algorithms.setUsers(data.users || [], {
-      transaction,
+    transaction,
     });
 
-    return algorithms;
+  return algorithms;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const algorithms = await db.algorithms.findByPk(id, {
@@ -45,11 +55,20 @@ module.exports = class AlgorithmsDBApi {
 
     await algorithms.update(
       {
-        algorithm_name: data.algorithm_name || null,
-        description: data.description || null,
+
+        algorithm_name: data.algorithm_name
+        ||
+        null
+,
+
+        description: data.description
+        ||
+        null
+,
+
         updatedById: currentUser.id,
       },
-      { transaction },
+      {transaction},
     );
 
     await algorithms.setTeams(data.teams || [], {
@@ -64,22 +83,19 @@ module.exports = class AlgorithmsDBApi {
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const algorithms = await db.algorithms.findByPk(id, options);
 
-    await algorithms.update(
-      {
-        deletedBy: currentUser.id,
-      },
-      {
-        transaction,
-      },
-    );
+    await algorithms.update({
+      deletedBy: currentUser.id
+    }, {
+      transaction,
+    });
 
     await algorithms.destroy({
-      transaction,
+      transaction
     });
 
     return algorithms;
@@ -88,20 +104,23 @@ module.exports = class AlgorithmsDBApi {
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
 
-    const algorithms = await db.algorithms.findOne({ where }, { transaction });
+    const algorithms = await db.algorithms.findOne(
+      { where },
+      { transaction },
+    );
 
     if (!algorithms) {
       return algorithms;
     }
 
-    const output = algorithms.get({ plain: true });
+    const output = algorithms.get({plain: true});
 
     output.teams = await algorithms.getTeams({
-      transaction,
+      transaction
     });
 
     output.users = await algorithms.getUsers({
-      transaction,
+      transaction
     });
 
     return output;
@@ -119,35 +138,29 @@ module.exports = class AlgorithmsDBApi {
     const transaction = (options && options.transaction) || undefined;
     let where = {};
     let include = [
+
       {
         model: db.teams,
         as: 'teams',
-        through: filter.teams
-          ? {
-              where: {
-                [Op.or]: filter.teams.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
+        through: filter.teams ? { where: {
+          [Op.or]: filter.teams.split('|').map(item => {
+            return { ['Id']: Utils.uuid(item) }
+          })
+        }} : null,
         required: filter.teams ? true : null,
       },
 
       {
         model: db.users,
         as: 'users',
-        through: filter.users
-          ? {
-              where: {
-                [Op.or]: filter.users.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
+        through: filter.users ? { where: {
+          [Op.or]: filter.users.split('|').map(item => {
+            return { ['Id']: Utils.uuid(item) }
+          })
+        }} : null,
         required: filter.users ? true : null,
       },
+
     ];
 
     if (filter) {
@@ -188,7 +201,9 @@ module.exports = class AlgorithmsDBApi {
       ) {
         where = {
           ...where,
-          active: filter.active === true || filter.active === 'true',
+          active:
+            filter.active === true ||
+            filter.active === 'true',
         };
       }
 
@@ -217,39 +232,35 @@ module.exports = class AlgorithmsDBApi {
       }
     }
 
-    let { rows, count } = options?.countOnly
-      ? {
-          rows: [],
-          count: await db.algorithms.count({
+    let { rows, count } = options?.countOnly ? {rows: [], count: await db.algorithms.count({
             where,
             include,
             distinct: true,
             limit: limit ? Number(limit) : undefined,
             offset: offset ? Number(offset) : undefined,
-            order:
-              filter.field && filter.sort
+            order: (filter.field && filter.sort)
                 ? [[filter.field, filter.sort]]
                 : [['createdAt', 'desc']],
             transaction,
-          }),
-        }
-      : await db.algorithms.findAndCountAll({
-          where,
-          include,
-          distinct: true,
-          limit: limit ? Number(limit) : undefined,
-          offset: offset ? Number(offset) : undefined,
-          order:
-            filter.field && filter.sort
-              ? [[filter.field, filter.sort]]
-              : [['createdAt', 'desc']],
-          transaction,
-        });
+        },
+    )} : await db.algorithms.findAndCountAll(
+        {
+            where,
+            include,
+            distinct: true,
+            limit: limit ? Number(limit) : undefined,
+            offset: offset ? Number(offset) : undefined,
+            order: (filter.field && filter.sort)
+                ? [[filter.field, filter.sort]]
+                : [['createdAt', 'desc']],
+            transaction,
+        },
+    );
 
-    //    rows = await this._fillWithRelationsAndFilesForRows(
-    //      rows,
-    //      options,
-    //    );
+//    rows = await this._fillWithRelationsAndFilesForRows(
+//      rows,
+//      options,
+//    );
 
     return { rows, count };
   }
@@ -261,13 +272,17 @@ module.exports = class AlgorithmsDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('algorithms', 'id', query),
+          Utils.ilike(
+            'algorithms',
+            'id',
+            query,
+          ),
         ],
       };
     }
 
     const records = await db.algorithms.findAll({
-      attributes: ['id', 'id'],
+      attributes: [ 'id', 'id' ],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -278,4 +293,6 @@ module.exports = class AlgorithmsDBApi {
       label: record.id,
     }));
   }
+
 };
+

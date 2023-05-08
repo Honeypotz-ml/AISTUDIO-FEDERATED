@@ -6,8 +6,13 @@ function format(message, args) {
     return null;
   }
 
-  return message.replace(/{(\d+)}/g, function (match, number) {
-    return typeof args[number] != 'undefined' ? args[number] : match;
+  return message.replace(/{(\d+)}/g, function (
+    match,
+    number,
+  ) {
+    return typeof args[number] != 'undefined'
+      ? args[number]
+      : match;
   });
 }
 

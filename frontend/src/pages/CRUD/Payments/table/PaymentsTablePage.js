@@ -7,6 +7,6 @@ const PaymentsTablePage = () => {
       <PaymentsTable />
     </div>
   );
-};
+}
 
 export default PaymentsTablePage;

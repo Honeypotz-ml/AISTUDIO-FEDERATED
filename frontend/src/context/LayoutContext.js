@@ -1,11 +1,11 @@
-import React from 'react';
+import React from "react";
 
 let LayoutStateContext = React.createContext();
 let LayoutDispatchContext = React.createContext();
 
 function layoutReducer(state, action) {
   switch (action.type) {
-    case 'TOGGLE_SIDEBAR':
+    case "TOGGLE_SIDEBAR":
       return { ...state, isSidebarOpened: !state.isSidebarOpened };
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
@@ -29,7 +29,7 @@ function LayoutProvider({ children }) {
 function useLayoutState() {
   let context = React.useContext(LayoutStateContext);
   if (context === undefined) {
-    throw new Error('useLayoutState must be used within a LayoutProvider');
+    throw new Error("useLayoutState must be used within a LayoutProvider");
   }
   return context;
 }
@@ -37,14 +37,14 @@ function useLayoutState() {
 function useLayoutDispatch() {
   let context = React.useContext(LayoutDispatchContext);
   if (context === undefined) {
-    throw new Error('useLayoutDispatch must be used within a LayoutProvider');
+    throw new Error("useLayoutDispatch must be used within a LayoutProvider");
   }
   return context;
 }
 
-const toggleSidebar = (dispatch) => {
+const toggleSidebar = dispatch => {
   dispatch({
-    type: 'TOGGLE_SIDEBAR',
+    type: "TOGGLE_SIDEBAR"
   });
 };
 
@@ -53,5 +53,5 @@ export {
   useLayoutState,
   useLayoutDispatch,
   toggleSidebar,
-  LayoutStateContext,
+  LayoutStateContext
 };

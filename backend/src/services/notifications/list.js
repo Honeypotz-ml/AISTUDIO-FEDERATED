@@ -11,33 +11,37 @@ const errors = {
     emailAlreadyInUse: 'Email is already in use',
     invalidEmail: 'Please provide a valid email',
     passwordReset: {
-      invalidToken: 'Password reset link is invalid or has expired',
+      invalidToken:
+        'Password reset link is invalid or has expired',
       error: `Email not recognized`,
     },
     passwordUpdate: {
-      samePassword: `You can't use the same password. Please create new password`,
+      samePassword: `You can't use the same password. Please create new password`
     },
     userNotVerified: `Sorry, your email has not been verified yet`,
     emailAddressVerificationEmail: {
-      invalidToken: 'Email verification link is invalid or has expired',
+      invalidToken:
+        'Email verification link is invalid or has expired',
       error: `Email not recognized`,
     },
   },
 
   iam: {
     errors: {
-      userAlreadyExists: 'User with this email already exists',
+      userAlreadyExists:
+        'User with this email already exists',
       userNotFound: 'User not found',
       disablingHimself: `You can't disable yourself`,
       revokingOwnPermission: `You can't revoke your own owner permission`,
-      deletingHimself: `You can't delete yourself`,
+      deletingHimself: `You can't delete yourself`
     },
   },
 
   importer: {
     errors: {
       invalidFileEmpty: 'The file is empty',
-      invalidFileExcel: 'Only excel (.xlsx) files are allowed',
+      invalidFileExcel:
+        'Only excel (.xlsx) files are allowed',
       invalidFileUpload:
         'Invalid file. Make sure you are using the last version of the template.',
       importHashRequired: 'Import hash is required',

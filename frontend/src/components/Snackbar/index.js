@@ -1,7 +1,7 @@
 import React, { createContext, useContext } from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import Slide from '@mui/material/Slide';
+import Slide from "@mui/material/Slide";
 
 export const INITIAL_STATE = {
   open: false,
@@ -58,11 +58,7 @@ const getSnackbar = () => {
             vertical: state.anchorOrigin.vertical,
           }}
         >
-          <Alert
-            onClose={handleClose}
-            severity={state.type}
-            sx={{ width: '100%' }}
-          >
+          <Alert onClose={handleClose} severity={state.type} sx={{ width: '100%' }}>
             {state.message}
           </Alert>
         </Snackbar>
@@ -73,7 +69,7 @@ const getSnackbar = () => {
 
   const showSnackbar = (options) => {
     dispatchAction && dispatchAction({ type: ACTIONS.open, options });
-  };
+  }
 
   return [SnackbarProvider, () => useContext(SnackbarContext), showSnackbar];
 };

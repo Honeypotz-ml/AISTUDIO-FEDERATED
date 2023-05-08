@@ -1,49 +1,49 @@
-import React from 'react';
-import axios from 'axios';
-import jwt from 'jsonwebtoken';
+import React from "react";
+import axios from "axios";
+import jwt from "jsonwebtoken";
 
-import { mockUser } from './mock';
+import { mockUser } from "./mock";
 
 //config
-import config from '../../src/config';
-import { showSnackbar } from '../components/Snackbar';
+import config from "../../src/config";
+import { showSnackbar } from "../components/Snackbar";
 
 let UserStateContext = React.createContext();
 let UserDispatchContext = React.createContext();
 
 function userReducer(state, action) {
   switch (action.type) {
-    case 'LOGIN_SUCCESS':
+    case "LOGIN_SUCCESS":
       return {
         ...state,
-        ...action.payload,
+        ...action.payload
       };
-    case 'REGISTER_REQUEST':
-    case 'RESET_REQUEST':
-    case 'PASSWORD_RESET_EMAIL_REQUEST':
+    case "REGISTER_REQUEST":
+    case "RESET_REQUEST":
+    case "PASSWORD_RESET_EMAIL_REQUEST":
       return {
         ...state,
         isFetching: true,
         errorMessage: '',
       };
-    case 'SIGN_OUT_SUCCESS':
+    case "SIGN_OUT_SUCCESS":
       return { ...state };
-    case 'AUTH_INIT_ERROR':
+    case "AUTH_INIT_ERROR":
       return Object.assign({}, state, {
-        currentUser: null,
-        loadingInit: false,
+          currentUser: null,
+          loadingInit: false,
       });
-    case 'REGISTER_SUCCESS':
-    case 'RESET_SUCCESS':
-    case 'PASSWORD_RESET_EMAIL_SUCCESS':
+    case "REGISTER_SUCCESS":
+    case "RESET_SUCCESS":
+    case "PASSWORD_RESET_EMAIL_SUCCESS":
       return Object.assign({}, state, {
-        isFetching: false,
-        errorMessage: '',
+          isFetching: false,
+          errorMessage: '',
       });
     case 'AUTH_FAILURE':
       return Object.assign({}, state, {
-        isFetching: false,
-        errorMessage: action.payload,
+          isFetching: false,
+          errorMessage: action.payload,
       });
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
@@ -54,14 +54,14 @@ function userReducer(state, action) {
 function UserProvider({ children }) {
   let [state, dispatch] = React.useReducer(userReducer, {
     isAuthenticated: () => {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token")
       if (config.isBackend && token) {
         const date = new Date().getTime() / 1000;
         const data = jwt.decode(token);
         if (!data) return false;
         return date < data.exp;
       } else if (token) {
-        return true;
+        return true
       }
       return false;
     },
@@ -83,7 +83,7 @@ function UserProvider({ children }) {
 function useUserState() {
   let context = React.useContext(UserStateContext);
   if (context === undefined) {
-    throw new Error('useUserState must be used within a UserProvider');
+    throw new Error("useUserState must be used within a UserProvider");
   }
   return context;
 }
@@ -91,7 +91,7 @@ function useUserState() {
 function useUserDispatch() {
   let context = React.useContext(UserDispatchContext);
   if (context === undefined) {
-    throw new Error('useUserDispatch must be used within a UserProvider');
+    throw new Error("useUserDispatch must be used within a UserProvider");
   }
   return context;
 }
@@ -107,7 +107,7 @@ function loginUser(
   history,
   setIsLoading,
   setError,
-  social = '',
+  social = ""
 ) {
   setError(false);
   setIsLoading(true);
@@ -116,19 +116,14 @@ function loginUser(
     setError(null);
     doInit()(dispatch);
     setIsLoading(false);
-    receiveToken('token', dispatch);
+    receiveToken("token", dispatch);
   } else {
     if (!!social) {
-      window.location.href =
-        config.baseURLApi +
-        '/auth/signin/' +
-        social +
-        '?app=' +
-        config.redirectUrl;
+      window.location.href = config.baseURLApi + "/auth/signin/" + social + '?app=' + config.redirectUrl;
     } else if (login.length > 0 && password.length > 0) {
       axios
-        .post('/auth/signin/local', { email: login, password })
-        .then((res) => {
+        .post("/auth/signin/local", { email: login, password })
+        .then(res => {
           const token = res.data;
           setError(null);
           setIsLoading(false);
@@ -140,7 +135,7 @@ function loginUser(
           setIsLoading(false);
         });
     } else {
-      dispatch({ type: 'LOGIN_FAILURE' });
+      dispatch({ type: "LOGIN_FAILURE" });
     }
   }
 }
@@ -148,37 +143,31 @@ function loginUser(
 export function sendPasswordResetEmail(email) {
   return (dispatch) => {
     if (!config.isBackend) {
-      return;
+      return
     } else {
       dispatch({
         type: 'PASSWORD_RESET_EMAIL_REQUEST',
       });
-      axios
-        .post('/auth/send-password-reset-email', { email })
-        .then((res) => {
-          dispatch({
-            type: 'PASSWORD_RESET_EMAIL_SUCCESS',
-          });
-          showSnackbar({
-            type: 'success',
-            message: 'Email with resetting instructions has been sent',
-          });
-        })
-        .catch((err) => {
-          dispatch(authError(err.response.data));
+      axios.post("/auth/send-password-reset-email", {email}).then(res => {
+        dispatch({
+          type: 'PASSWORD_RESET_EMAIL_SUCCESS',
         });
+        showSnackbar({ type: "success", message: "Email with resetting instructions has been sent" });
+      }).catch(err => {
+        dispatch(authError(err.response.data));
+      })
     }
-  };
+  }
 }
 
 function signOut(dispatch, history) {
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
   localStorage.removeItem('user_id');
-  document.cookie = 'token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-  axios.defaults.headers.common['Authorization'] = '';
-  dispatch({ type: 'SIGN_OUT_SUCCESS' });
-  history.push('/login');
+  document.cookie = "token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+  axios.defaults.headers.common["Authorization"] = "";
+  dispatch({ type: "SIGN_OUT_SUCCESS" });
+  history.push("/login");
 }
 
 export function receiveToken(token, dispatch) {
@@ -190,16 +179,16 @@ export function receiveToken(token, dispatch) {
     delete user.id;
   } else {
     user = {
-      email: config.auth.email,
+      email: config.auth.email
     };
   }
 
   delete user.id;
-  localStorage.setItem('token', token);
-  localStorage.setItem('user', JSON.stringify(user));
-  localStorage.setItem('theme', 'default');
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-  dispatch({ type: 'LOGIN_SUCCESS' });
+  localStorage.setItem("token", token);
+  localStorage.setItem("user", JSON.stringify(user));
+  localStorage.setItem("theme", "default");
+  axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+  dispatch({ type: "LOGIN_SUCCESS" });
 }
 
 async function findMe() {
@@ -252,7 +241,7 @@ export function doInit() {
         });
       }
     }
-  };
+  }
 }
 
 export function registerUser(
@@ -262,7 +251,7 @@ export function registerUser(
   history,
   setIsLoading,
   setError,
-  social = '',
+  social = ""
 ) {
   return () => {
     if (!config.isBackend) {
@@ -272,22 +261,16 @@ export function registerUser(
         type: 'REGISTER_REQUEST',
       });
       if (login.length > 0 && password.length > 0) {
-        axios
-          .post('/auth/signup', { email: login, password })
-          .then((res) => {
-            dispatch({
-              type: 'REGISTER_SUCCESS',
-            });
-            showSnackbar({
-              type: 'success',
-              message:
-                "You've been registered successfully. Please check your email for verification link",
-            });
-            history.push('/login');
-          })
-          .catch((err) => {
-            dispatch(authError(err.response.data));
+        axios.post("/auth/signup", {email: login, password}).then(res => {
+          dispatch({
+            type: 'REGISTER_SUCCESS'
           });
+          showSnackbar({ type: "success", message: "You've been registered successfully. Please check your email for verification link" });
+          history.push('/login');
+        }).catch(err => {
+          dispatch(authError(err.response.data));
+        })
+
       } else {
         dispatch(authError('Something was wrong. Try again'));
       }
@@ -296,28 +279,21 @@ export function registerUser(
 }
 
 export function verifyEmail(token, history) {
-  return (dispatch) => {
+  return(dispatch) => {
     if (!config.isBackend) {
       history.push('/login');
     } else {
-      axios
-        .put('/auth/verify-email', { token })
-        .then((verified) => {
-          if (verified) {
-            showSnackbar({
-              type: 'success',
-              message: 'Your email was verified',
-            });
-          }
-        })
-        .catch((err) => {
-          showSnackbar({ type: 'error', message: err.response });
-        })
-        .finally(() => {
-          history.push('/login');
-        });
+      axios.put("/auth/verify-email", {token}).then(verified => {
+        if (verified) {
+          showSnackbar({ type: "success", message: "Your email was verified" });
+        }
+      }).catch(err => {
+        showSnackbar({ type: "error", message: err.response });
+      }).finally(() => {
+        history.push('/login');
+      })
     }
-  };
+  }
 }
 
 export function resetPassword(token, password, history) {
@@ -328,21 +304,15 @@ export function resetPassword(token, password, history) {
       dispatch({
         type: 'RESET_REQUEST',
       });
-      axios
-        .put('/auth/password-reset', { token, password })
-        .then((res) => {
+      axios.put("/auth/password-reset", {token, password}).then(res => {
           dispatch({
             type: 'RESET_SUCCESS',
           });
-          showSnackbar({
-            type: 'success',
-            message: 'Password has been updated',
-          });
-          history.push('/login');
-        })
-        .catch((err) => {
-          dispatch(authError(err.response.data));
-        });
+          showSnackbar({ type: "success", message: "Password has been updated" });
+        history.push('/login');
+      }).catch(err => {
+        dispatch(authError(err.response.data));
+      })
     }
-  };
+  }
 }

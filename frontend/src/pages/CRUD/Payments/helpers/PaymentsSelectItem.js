@@ -50,7 +50,10 @@ const PaymentsSelectItem = (props) => {
     },
   };
 
-  const { form, ...rest } = props;
+  const {
+    form,
+    ...rest
+  } = props;
 
   return (
     <React.Fragment>
@@ -63,10 +66,12 @@ const PaymentsSelectItem = (props) => {
       />
     </React.Fragment>
   );
-};
+}
 
 const select = (state) => ({
-  hasPermissionToCreate: state.payments.hasPermissionToCreate,
+  hasPermissionToCreate: state.payments.hasPermissionToCreate
 });
 
-export default connect(select)(PaymentsSelectItem);
+export default connect(select)(
+  PaymentsSelectItem,
+);

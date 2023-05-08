@@ -73,6 +73,6 @@ export default makeStyles((theme) => ({
     justifyContent: 'space-around',
     marginTop: '1rem',
     width: '100%',
-    flexWrap: 'wrap',
+    flexWrap: 'wrap'
   },
 }));

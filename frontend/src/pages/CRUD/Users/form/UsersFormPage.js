@@ -5,8 +5,15 @@ import actions from 'actions/users/usersFormActions';
 import { connect } from 'react-redux';
 
 const UsersFormPage = (props) => {
-  const { dispatch, match, saveLoading, findLoading, record, currentUser } =
-    props;
+
+  const {
+    dispatch,
+    match,
+    saveLoading,
+    findLoading,
+    record,
+    currentUser
+  } = props;
 
   const [dispatched, setDispatched] = useState(false);
 
@@ -20,9 +27,9 @@ const UsersFormPage = (props) => {
 
   const doSubmit = (id, data) => {
     if (isEditing() || isProfile()) {
-      dispatch(actions.doUpdate(id, data, isProfile()));
+      dispatch(actions.doUpdate(id, data, isProfile()))
     } else {
-      dispatch(actions.doCreate(data));
+      dispatch(actions.doCreate(data))
     }
   };
 
@@ -35,29 +42,29 @@ const UsersFormPage = (props) => {
         const currentUserId = currentUser.user.id;
         dispatch(actions.doFind(currentUserId));
       } else {
-        dispatch(actions.doNew());
+        dispatch(actions.doNew())
       }
     }
     setDispatched(true);
-  }, [match, dispatch]);
+  }, [match, dispatch])
 
   return (
     <React.Fragment>
       {dispatched && (
         <UsersForm
-          saveLoading={saveLoading}
-          findLoading={findLoading}
-          currentUser={currentUser}
-          record={isEditing() || isProfile() ? record : {}}
-          isEditing={isEditing()}
-          isProfile={isProfile()}
-          onSubmit={doSubmit}
-          onCancel={() => dispatch(push('/admin/users'))}
+        saveLoading={saveLoading}
+        findLoading={findLoading}
+        currentUser={currentUser}
+        record={(isEditing() || isProfile()) ? record : {}}
+        isEditing={isEditing()}
+        isProfile={isProfile()}
+        onSubmit={doSubmit}
+        onCancel={() => dispatch(push('/admin/users'))}
         />
-      )}
+        )}
     </React.Fragment>
   );
-};
+}
 
 function mapStateToProps(store) {
   return {

@@ -22,9 +22,12 @@ const SwitchFormItem = (props) => {
             <FormControlLabel
               control={
                 <Checkbox
-                  color='default'
+                  color="default"
                   onChange={(event) => {
-                    form.setFieldValue(name, event.target.checked);
+                    form.setFieldValue(
+                      name,
+                      event.target.checked,
+                    );
                     form.setFieldTouched(name);
                   }}
                   checked={!!form.values[name]}

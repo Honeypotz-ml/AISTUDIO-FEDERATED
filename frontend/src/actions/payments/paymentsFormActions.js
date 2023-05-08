@@ -17,14 +17,14 @@ const actions = {
         type: 'PAYMENTS_FORM_FIND_STARTED',
       });
 
-      axios.get(`/payments/${id}`).then((res) => {
+      axios.get(`/payments/${id}`).then(res => {
         const record = res.data;
 
         dispatch({
           type: 'PAYMENTS_FORM_FIND_SUCCESS',
           payload: record,
         });
-      });
+      })
     } catch (error) {
       Errors.handle(error);
 
@@ -42,13 +42,13 @@ const actions = {
         type: 'PAYMENTS_FORM_CREATE_STARTED',
       });
 
-      axios.post('/payments', { data: values }).then((res) => {
+      axios.post('/payments', { data: values }).then(res => {
         dispatch({
           type: 'PAYMENTS_FORM_CREATE_SUCCESS',
         });
         showSnackbar({ type: 'success', message: 'Payments created' });
         dispatch(push('/admin/payments'));
-      });
+      })
     } catch (error) {
       Errors.handle(error);
 
@@ -58,13 +58,16 @@ const actions = {
     }
   },
 
-  doUpdate: (id, values, isProfile) => async (dispatch, getState) => {
+  doUpdate: (id, values, isProfile) => async (
+    dispatch,
+    getState,
+  ) => {
     try {
       dispatch({
         type: 'PAYMENTS_FORM_UPDATE_STARTED',
       });
 
-      await axios.put(`/payments/${id}`, { id, data: values });
+      await axios.put(`/payments/${id}`, {id, data: values});
 
       dispatch(doInit());
 

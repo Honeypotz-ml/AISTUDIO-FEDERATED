@@ -1,11 +1,12 @@
-import React from 'react';
+
+import React from "react";
 import { Link } from 'react-router-dom';
 
 // styles
-import useStyles from './styles';
-import reactLogo from '../../images/react-logo.svg';
+import useStyles from "./styles";
+import reactLogo from "../../images/react-logo.svg";
 
-import { Button } from '../../components/Wrappers';
+import { Button } from "../../components/Wrappers";
 
 function Starter() {
   let classes = useStyles();
@@ -43,25 +44,27 @@ function Starter() {
         <div className={classes.links}>
           <div>
             🌟{' '}
-            <a target={'_blank'} href='https://reactjs.org/'>
+            <a target={"_blank"} href="https://reactjs.org/">
               ReactJS
             </a>
           </div>
           <div>
             ✨{' '}
-            <a target={'_blank'} href='https://nodejs.org/en/'>
+
+            <a target={"_blank"} href="https://nodejs.org/en/">
               Node.js
             </a>
+
           </div>
           <div>
             💫{' '}
-            <a target={'_blank'} href='https://flatlogic.com/forum/'>
+            <a target={"_blank"} href="https://flatlogic.com/forum/">
               Flatlogic Forum
             </a>
           </div>
           <div>
             ⭐{' '}
-            <a target={'_blank'} href='https://mui.com/'>
+            <a target={"_blank"} href="https://mui.com/">
               Material-UI
             </a>
           </div>
@@ -69,6 +72,6 @@ function Starter() {
       </div>
     </div>
   );
-}
+};
 
 export default Starter;

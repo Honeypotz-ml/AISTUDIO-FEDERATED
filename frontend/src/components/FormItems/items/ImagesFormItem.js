@@ -23,7 +23,9 @@ const ImagesFormItem = (props) => {
     <FastField name={name}>
       {({ form }) => (
         <>
-          <Typography style={{ marginBottom: 10 }}>{label}</Typography>
+          <Typography style={{ marginBottom: 10 }}>
+            {label}
+          </Typography>
           <ImagesUploader
             name={name}
             path={path}

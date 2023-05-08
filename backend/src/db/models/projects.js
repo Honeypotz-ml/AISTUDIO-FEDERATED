@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 
-module.exports = function (sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
   const projects = sequelize.define(
     'projects',
     {
@@ -28,6 +28,7 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   projects.associate = (db) => {
+
     db.projects.belongsTo(db.users, {
       as: 'createdBy',
     });
@@ -39,3 +40,4 @@ module.exports = function (sequelize, DataTypes) {
 
   return projects;
 };
+

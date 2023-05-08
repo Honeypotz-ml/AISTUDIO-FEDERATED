@@ -7,6 +7,6 @@ const FederationTablePage = () => {
       <FederationTable />
     </div>
   );
-};
+}
 
 export default FederationTablePage;
