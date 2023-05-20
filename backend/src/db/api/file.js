@@ -3,16 +3,9 @@ const assert = require('assert');
 const services = require('../../services/file');
 
 module.exports = class FileDBApi {
-  static async replaceRelationFiles(
-    relation,
-    rawFiles,
-    options,
-  ) {
+  static async replaceRelationFiles(relation, rawFiles, options) {
     assert(relation.belongsTo, 'belongsTo is required');
-    assert(
-      relation.belongsToColumn,
-      'belongsToColumn is required',
-    );
+    assert(relation.belongsToColumn, 'belongsToColumn is required');
     assert(relation.belongsToId, 'belongsToId is required');
 
     let files = [];
@@ -29,11 +22,9 @@ module.exports = class FileDBApi {
 
   static async _addFiles(relation, files, options) {
     const transaction = (options && options.transaction) || undefined;
-    const currentUser = (options && options.currentUser) || {id: null};
+    const currentUser = (options && options.currentUser) || { id: null };
 
-    const inexistentFiles = files.filter(
-      (file) => !!file.new,
-    );
+    const inexistentFiles = files.filter((file) => !!file.new);
 
     for (const file of inexistentFiles) {
       await db.file.create(
@@ -55,11 +46,7 @@ module.exports = class FileDBApi {
     }
   }
 
-  static async _removeLegacyFiles(
-    relation,
-    files,
-    options,
-  ) {
+  static async _removeLegacyFiles(relation, files, options) {
     const transaction = (options && options.transaction) || undefined;
 
     const filesToDelete = await db.file.findAll({
@@ -68,10 +55,9 @@ module.exports = class FileDBApi {
         belongsToId: relation.belongsToId,
         belongsToColumn: relation.belongsToColumn,
         id: {
-          [db.Sequelize.Op
-            .notIn]: files
+          [db.Sequelize.Op.notIn]: files
             .filter((file) => !file.new)
-            .map((file) => file.id)
+            .map((file) => file.id),
         },
       },
       transaction,

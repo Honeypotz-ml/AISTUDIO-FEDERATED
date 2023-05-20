@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Box,
   Collapse,
@@ -9,22 +9,22 @@ import {
   ListItemText,
   Popover,
   TextField as Input,
-  Typography
-} from "@mui/material";
+  Typography,
+} from '@mui/material';
 import {
   Inbox as InboxIcon,
-  ExpandMore as ExpandIcon
-} from "@mui/icons-material";
-import { Link } from "react-router-dom";
-import classnames from "classnames";
+  ExpandMore as ExpandIcon,
+} from '@mui/icons-material';
+import { Link } from 'react-router-dom';
+import classnames from 'classnames';
 
 // styles
-import useStyles from "./styles";
-import useStyles2 from "../../styles";
+import useStyles from './styles';
+import useStyles2 from '../../styles';
 
 // components
-import Dot from "../Dot";
-import { Button, Badge } from "../../../Wrappers";
+import Dot from '../Dot';
+import { Button, Badge } from '../../../Wrappers';
 
 export default function SidebarLink({
   link,
@@ -46,42 +46,42 @@ export default function SidebarLink({
 
   // Login page onClick
   function onLogin() {
-    localStorage.removeItem("token");
+    localStorage.removeItem('token');
     window.location.reload();
   }
 
-  onLogin.clickName = "onLogin";
+  onLogin.clickName = 'onLogin';
 
   let classes = useStyles(isOpen);
   const classes2 = useStyles2();
   let isLinkActive =
     link && (location.pathname === link || location.pathname.includes(link));
 
-  if (type === "title")
+  if (type === 'title')
     return (
       <Typography
         className={classnames(classes.linkText, classes.sectionTitle, {
-          [classes.linkTextHidden]: !isSidebarOpened
+          [classes.linkTextHidden]: !isSidebarOpened,
         })}
       >
         {label}
       </Typography>
     );
 
-  if (type === "divider") return <Divider className={classes.divider} />;
+  if (type === 'divider') return <Divider className={classes.divider} />;
 
-  if (type === "margin") return <section style={{ marginTop: 240 }} />;
+  if (type === 'margin') return <section style={{ marginTop: 240 }} />;
 
   // Add Section Popover
 
   const open = Boolean(anchorEl);
-  const id = open ? "add-section-popover" : undefined;
+  const id = open ? 'add-section-popover' : undefined;
 
   function addSectionClick(event) {
     setAnchorEl(event.currentTarget);
   }
 
-  addSectionClick.clickName = "addSectionClick";
+  addSectionClick.clickName = 'addSectionClick';
 
   const addSectionClose = () => {
     setAnchorEl(null);
@@ -91,7 +91,7 @@ export default function SidebarLink({
     return (
       <>
         <ListItem
-          onClick={e => {
+          onClick={(e) => {
             if (click) {
               return click(e, addSectionClick, onLogin);
             }
@@ -105,25 +105,25 @@ export default function SidebarLink({
           classes={{
             root: classnames(classes.link, {
               [classes.linkActive]: isLinkActive && !nested,
-              [classes.linkNested]: nested
-            })
+              [classes.linkNested]: nested,
+            }),
           }}
           disableRipple
         >
           <ListItemIcon
             className={classnames(classes.linkIcon, {
-              [classes.linkIconActive]: isLinkActive
+              [classes.linkIconActive]: isLinkActive,
             })}
             style={{ margin: nested && -11 }}
           >
-            {nested ? <Dot color={isLinkActive && "primary"} /> : icon}
+            {nested ? <Dot color={isLinkActive && 'primary'} /> : icon}
           </ListItemIcon>
           <ListItemText
             classes={{
               primary: classnames(classes.linkText, {
                 [classes.linkTextActive]: isLinkActive,
-                [classes.linkTextHidden]: !isSidebarOpened
-              })
+                [classes.linkTextHidden]: !isSidebarOpened,
+              }),
             }}
             primary={label}
           />
@@ -134,25 +134,25 @@ export default function SidebarLink({
           anchorEl={anchorEl}
           onClose={addSectionClose}
           anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left"
+            vertical: 'bottom',
+            horizontal: 'left',
           }}
           transformOrigin={{
-            vertical: "top",
-            horizontal: "left"
+            vertical: 'top',
+            horizontal: 'left',
           }}
           classes={{ paper: classes2.popover }}
         >
-          <Box m={3} display="flex" flexDirection="column">
+          <Box m={3} display='flex' flexDirection='column'>
             <Typography>Add section</Typography>
             <Input
-              placeholder="Section Name"
+              placeholder='Section Name'
               classes={{ root: classes2.input }}
             />
-            <Box display="flex" justifyContent="flex-end" mt={2}>
+            <Box display='flex' justifyContent='flex-end' mt={2}>
               <Button
-                color="secondary"
-                variant="contained"
+                color='secondary'
+                variant='contained'
                 className={classes2.noBoxShadow}
               >
                 Add
@@ -178,14 +178,14 @@ export default function SidebarLink({
           onClick={toggleCollapse}
           className={classnames(classes.link, {
             [classes.linkActive]: isLinkActive,
-            [classes.nestedMenu]: type === "nested"
+            [classes.nestedMenu]: type === 'nested',
           })}
           to={link}
           disableRipple
         >
           <ListItemIcon
             className={classnames(classes.linkIcon, {
-              [classes.linkIconActive]: isLinkActive
+              [classes.linkIconActive]: isLinkActive,
             })}
           >
             {icon ? icon : <InboxIcon />}
@@ -195,8 +195,8 @@ export default function SidebarLink({
               classes={{
                 primary: classnames(classes.linkText, {
                   [classes.linkTextActive]: isLinkActive,
-                  [classes.linkTextHidden]: !isSidebarOpened
-                })
+                  [classes.linkTextHidden]: !isSidebarOpened,
+                }),
               }}
               primary={label}
             />
@@ -205,9 +205,9 @@ export default function SidebarLink({
             className={classnames(
               {
                 [classes.expand]: isOpen,
-                [classes.linkTextHidden]: !isSidebarOpened
+                [classes.linkTextHidden]: !isSidebarOpened,
               },
-              classes.expandWrapper
+              classes.expandWrapper,
             )}
           />
         </ListItem>
@@ -218,14 +218,14 @@ export default function SidebarLink({
           onClick={toggleCollapse}
           className={classnames(classes.link, {
             [classes.linkActive]: isLinkActive,
-            [classes.nestedMenu]: type === "nested"
+            [classes.nestedMenu]: type === 'nested',
           })}
           to={link}
           disableRipple
         >
           <ListItemIcon
             className={classnames(classes.linkIcon, {
-              [classes.linkIconActive]: isLinkActive
+              [classes.linkIconActive]: isLinkActive,
             })}
           >
             {icon ? icon : <InboxIcon />}
@@ -234,8 +234,8 @@ export default function SidebarLink({
             classes={{
               primary: classnames(classes.linkText, {
                 [classes.linkTextActive]: isLinkActive,
-                [classes.linkTextHidden]: !isSidebarOpened
-              })
+                [classes.linkTextHidden]: !isSidebarOpened,
+              }),
             }}
             primary={label}
           />
@@ -243,9 +243,9 @@ export default function SidebarLink({
             className={classnames(
               {
                 [classes.expand]: isOpen,
-                [classes.linkTextHidden]: !isSidebarOpened
+                [classes.linkTextHidden]: !isSidebarOpened,
               },
-              classes.expandWrapper
+              classes.expandWrapper,
             )}
           />
         </ListItem>
@@ -253,14 +253,14 @@ export default function SidebarLink({
       {children && (
         <Collapse
           in={isOpen && isSidebarOpened}
-          timeout="auto"
+          timeout='auto'
           unmountOnExit
           className={classnames(classes.nestedList, {
-            [classes.nestedMenuItem]: type === "nested"
+            [classes.nestedMenuItem]: type === 'nested',
           })}
         >
-          <List component="div" disablePadding>
-            {children.map(childrenLink => (
+          <List component='div' disablePadding>
+            {children.map((childrenLink) => (
               <SidebarLink
                 key={(childrenLink && childrenLink.link) || childrenLink.label}
                 location={location}

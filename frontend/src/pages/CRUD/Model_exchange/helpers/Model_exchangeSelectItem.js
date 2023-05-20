@@ -50,10 +50,7 @@ const Model_exchangeSelectItem = (props) => {
     },
   };
 
-  const {
-    form,
-    ...rest
-  } = props;
+  const { form, ...rest } = props;
 
   return (
     <React.Fragment>
@@ -66,12 +63,10 @@ const Model_exchangeSelectItem = (props) => {
       />
     </React.Fragment>
   );
-}
+};
 
 const select = (state) => ({
-  hasPermissionToCreate: state.model_exchange.hasPermissionToCreate
+  hasPermissionToCreate: state.model_exchange.hasPermissionToCreate,
 });
 
-export default connect(select)(
-  Model_exchangeSelectItem,
-);
+export default connect(select)(Model_exchangeSelectItem);

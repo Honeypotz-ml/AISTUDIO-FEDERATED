@@ -1,6 +1,6 @@
 import axios from 'axios';
 import config from '../config';
-import jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
 import { showSnackbar } from '../components/Snackbar';
 import { push } from 'connected-react-router';
 import Errors from 'components/FormItems/error/errors';
@@ -53,72 +53,79 @@ export function doInit() {
         payload: error,
       });
     }
-  }
+  };
 }
 
 export function logoutUser() {
-    return (dispatch) => {
-        dispatch({
-          type: LOGOUT_REQUEST,
-        });
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        axios.defaults.headers.common['Authorization'] = "";
-        dispatch({
-          type: LOGOUT_SUCCESS,
-        });
-      dispatch(push('/login'));
-    };
+  return (dispatch) => {
+    dispatch({
+      type: LOGOUT_REQUEST,
+    });
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    axios.defaults.headers.common['Authorization'] = '';
+    dispatch({
+      type: LOGOUT_SUCCESS,
+    });
+    dispatch(push('/login'));
+  };
 }
 
 export function receiveToken(token) {
-    return (dispatch) => {
-        let user = jwt.decode(token);
+  return (dispatch) => {
+    let user = jwt.decode(token);
 
-        localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(user));
-        axios.defaults.headers.common['Authorization'] = "Bearer " + token;
-        dispatch({
-          type: LOGIN_SUCCESS
-        });
-        dispatch(push('/app'));
-    }
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(user));
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+    dispatch({
+      type: LOGIN_SUCCESS,
+    });
+    dispatch(push('/app'));
+  };
 }
 
 export function loginUser(creds) {
-    return (dispatch) => {
-      dispatch({
-        type: LOGIN_REQUEST,
-      });
-      if (creds.social) {
-        window.location.href = config.baseURLApi + "/auth/signin/" + creds.social;
-      } else if (creds.email.length > 0 && creds.password.length > 0) {
-        axios.post("/auth/signin/local", creds).then(res => {
+  return (dispatch) => {
+    dispatch({
+      type: LOGIN_REQUEST,
+    });
+    if (creds.social) {
+      window.location.href = config.baseURLApi + '/auth/signin/' + creds.social;
+    } else if (creds.email.length > 0 && creds.password.length > 0) {
+      axios
+        .post('/auth/signin/local', creds)
+        .then((res) => {
           const token = res.data;
           dispatch(receiveToken(token));
           dispatch(doInit());
           dispatch(push('/app'));
-        }).catch(err => {
-          dispatch(authError(err.response.data));
         })
-      } else {
-        dispatch(authError('Something was wrong. Try again'));
-      }
-    };
+        .catch((err) => {
+          dispatch(authError(err.response.data));
+        });
+    } else {
+      dispatch(authError('Something was wrong. Try again'));
+    }
+  };
 }
 
 export function verifyEmail(token) {
-  return(dispatch) => {
-    axios.put("/auth/verify-email", {token}).then(verified => {
-      if (verified) {
-        showSnackbar({ type: "success", message: "Your email was verified" });
-      }
-    }).catch(err => {
-      showSnackbar({ type: "error", message: err.response.data });
-    }).finally(() => {
-      dispatch(push('/login'));
-    })
-  }
+  return (dispatch) => {
+    axios
+      .put('/auth/verify-email', { token })
+      .then((verified) => {
+        if (verified) {
+          showSnackbar({ type: 'success', message: 'Your email was verified' });
+        }
+      })
+      .catch((err) => {
+        showSnackbar({ type: 'error', message: err.response.data });
+      })
+      .finally(() => {
+        dispatch(push('/login'));
+      });
+  };
 }
 
 export function resetPassword(token, password) {
@@ -126,16 +133,19 @@ export function resetPassword(token, password) {
     dispatch({
       type: RESET_REQUEST,
     });
-    axios.put("/auth/password-reset", {token, password}).then(res => {
+    axios
+      .put('/auth/password-reset', { token, password })
+      .then((res) => {
         dispatch({
           type: RESET_SUCCESS,
         });
-        showSnackbar({ type: "success", message: "Password has been updated" });
-      dispatch(push('/login'));
-    }).catch(err => {
-      dispatch(authError(err.response.data));
-    })
-  }
+        showSnackbar({ type: 'success', message: 'Password has been updated' });
+        dispatch(push('/login'));
+      })
+      .catch((err) => {
+        dispatch(authError(err.response.data));
+      });
+  };
 }
 
 export function sendPasswordResetEmail(email) {
@@ -143,16 +153,22 @@ export function sendPasswordResetEmail(email) {
     dispatch({
       type: PASSWORD_RESET_EMAIL_REQUEST,
     });
-    axios.post("/auth/send-password-reset-email", {email}).then(res => {
-      dispatch({
-        type: PASSWORD_RESET_EMAIL_SUCCESS,
+    axios
+      .post('/auth/send-password-reset-email', { email })
+      .then((res) => {
+        dispatch({
+          type: PASSWORD_RESET_EMAIL_SUCCESS,
+        });
+        showSnackbar({
+          type: 'success',
+          message: 'Email with resetting instructions has been sent',
+        });
+        dispatch(push('/login'));
+      })
+      .catch((err) => {
+        dispatch(authError(err.response.data));
       });
-      showSnackbar({ type: "success", message: "Email with resetting instructions has been sent" });
-      dispatch(push('/login'));
-    }).catch(err => {
-      dispatch(authError(err.response.data));
-    })
-  }
+  };
 }
 
 export function registerUser(creds) {
@@ -162,16 +178,22 @@ export function registerUser(creds) {
     });
 
     if (creds.email.length > 0 && creds.password.length > 0) {
-      axios.post("/auth/signup", creds).then(res => {
-        dispatch({
-          type: REGISTER_SUCCESS
+      axios
+        .post('/auth/signup', creds)
+        .then((res) => {
+          dispatch({
+            type: REGISTER_SUCCESS,
+          });
+          showSnackbar({
+            type: 'success',
+            message:
+              "You've been registered successfully. Please check your email for verification link",
+          });
+          dispatch(push('/login'));
+        })
+        .catch((err) => {
+          dispatch(authError(err.response.data));
         });
-        showSnackbar({ type: "success", message: "You\'ve been registered successfully. Please check your email for verification link" });
-        dispatch(push('/login'));
-      }).catch(err => {
-        dispatch(authError(err.response.data));
-      })
-
     } else {
       dispatch(authError('Something was wrong. Try again'));
     }

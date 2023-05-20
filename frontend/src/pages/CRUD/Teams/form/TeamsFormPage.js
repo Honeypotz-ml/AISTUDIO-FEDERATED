@@ -5,15 +5,8 @@ import actions from 'actions/teams/teamsFormActions';
 import { connect } from 'react-redux';
 
 const TeamsFormPage = (props) => {
-
-  const {
-    dispatch,
-    match,
-    saveLoading,
-    findLoading,
-    record,
-    currentUser
-  } = props;
+  const { dispatch, match, saveLoading, findLoading, record, currentUser } =
+    props;
 
   const [dispatched, setDispatched] = useState(false);
 
@@ -27,9 +20,9 @@ const TeamsFormPage = (props) => {
 
   const doSubmit = (id, data) => {
     if (isEditing() || isProfile()) {
-      dispatch(actions.doUpdate(id, data, isProfile()))
+      dispatch(actions.doUpdate(id, data, isProfile()));
     } else {
-      dispatch(actions.doCreate(data))
+      dispatch(actions.doCreate(data));
     }
   };
 
@@ -42,29 +35,29 @@ const TeamsFormPage = (props) => {
         const currentUserId = currentUser.user.id;
         dispatch(actions.doFind(currentUserId));
       } else {
-        dispatch(actions.doNew())
+        dispatch(actions.doNew());
       }
     }
     setDispatched(true);
-  }, [match, dispatch])
+  }, [match, dispatch]);
 
   return (
     <React.Fragment>
       {dispatched && (
         <TeamsForm
-        saveLoading={saveLoading}
-        findLoading={findLoading}
-        currentUser={currentUser}
-        record={(isEditing() || isProfile()) ? record : {}}
-        isEditing={isEditing()}
-        isProfile={isProfile()}
-        onSubmit={doSubmit}
-        onCancel={() => dispatch(push('/admin/teams'))}
+          saveLoading={saveLoading}
+          findLoading={findLoading}
+          currentUser={currentUser}
+          record={isEditing() || isProfile() ? record : {}}
+          isEditing={isEditing()}
+          isProfile={isProfile()}
+          onSubmit={doSubmit}
+          onCancel={() => dispatch(push('/admin/teams'))}
         />
-        )}
+      )}
     </React.Fragment>
   );
-}
+};
 
 function mapStateToProps(store) {
   return {

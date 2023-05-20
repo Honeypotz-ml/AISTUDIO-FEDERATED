@@ -1,4 +1,3 @@
-
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -8,27 +7,26 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class TrainingDBApi {
-
   static async create(data, options) {
-  const currentUser = (options && options.currentUser) || { id: null };
-  const transaction = (options && options.transaction) || undefined;
+    const currentUser = (options && options.currentUser) || { id: null };
+    const transaction = (options && options.transaction) || undefined;
 
-  const training = await db.training.create(
-  {
-  id: data.id || undefined,
+    const training = await db.training.create(
+      {
+        id: data.id || undefined,
 
-  importHash: data.importHash || null,
-  createdById: currentUser.id,
-  updatedById: currentUser.id,
-  },
-  { transaction },
-  );
+        importHash: data.importHash || null,
+        createdById: currentUser.id,
+        updatedById: currentUser.id,
+      },
+      { transaction },
+    );
 
-  return training;
+    return training;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || {id: null};
+    const currentUser = (options && options.currentUser) || { id: null };
     const transaction = (options && options.transaction) || undefined;
 
     const training = await db.training.findByPk(id, {
@@ -37,29 +35,31 @@ module.exports = class TrainingDBApi {
 
     await training.update(
       {
-
         updatedById: currentUser.id,
       },
-      {transaction},
+      { transaction },
     );
 
     return training;
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || {id: null};
+    const currentUser = (options && options.currentUser) || { id: null };
     const transaction = (options && options.transaction) || undefined;
 
     const training = await db.training.findByPk(id, options);
 
-    await training.update({
-      deletedBy: currentUser.id
-    }, {
-      transaction,
-    });
+    await training.update(
+      {
+        deletedBy: currentUser.id,
+      },
+      {
+        transaction,
+      },
+    );
 
     await training.destroy({
-      transaction
+      transaction,
     });
 
     return training;
@@ -68,16 +68,13 @@ module.exports = class TrainingDBApi {
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
 
-    const training = await db.training.findOne(
-      { where },
-      { transaction },
-    );
+    const training = await db.training.findOne({ where }, { transaction });
 
     if (!training) {
       return training;
     }
 
-    const output = training.get({plain: true});
+    const output = training.get({ plain: true });
 
     return output;
   }
@@ -93,9 +90,7 @@ module.exports = class TrainingDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [
-
-    ];
+    let include = [];
 
     if (filter) {
       if (filter.id) {
@@ -113,9 +108,7 @@ module.exports = class TrainingDBApi {
       ) {
         where = {
           ...where,
-          active:
-            filter.active === true ||
-            filter.active === 'true',
+          active: filter.active === true || filter.active === 'true',
         };
       }
 
@@ -144,35 +137,39 @@ module.exports = class TrainingDBApi {
       }
     }
 
-    let { rows, count } = options?.countOnly ? {rows: [], count: await db.training.count({
+    let { rows, count } = options?.countOnly
+      ? {
+          rows: [],
+          count: await db.training.count({
             where,
             include,
             distinct: true,
             limit: limit ? Number(limit) : undefined,
             offset: offset ? Number(offset) : undefined,
-            order: (filter.field && filter.sort)
+            order:
+              filter.field && filter.sort
                 ? [[filter.field, filter.sort]]
                 : [['createdAt', 'desc']],
             transaction,
-        },
-    )} : await db.training.findAndCountAll(
-        {
-            where,
-            include,
-            distinct: true,
-            limit: limit ? Number(limit) : undefined,
-            offset: offset ? Number(offset) : undefined,
-            order: (filter.field && filter.sort)
-                ? [[filter.field, filter.sort]]
-                : [['createdAt', 'desc']],
-            transaction,
-        },
-    );
+          }),
+        }
+      : await db.training.findAndCountAll({
+          where,
+          include,
+          distinct: true,
+          limit: limit ? Number(limit) : undefined,
+          offset: offset ? Number(offset) : undefined,
+          order:
+            filter.field && filter.sort
+              ? [[filter.field, filter.sort]]
+              : [['createdAt', 'desc']],
+          transaction,
+        });
 
-//    rows = await this._fillWithRelationsAndFilesForRows(
-//      rows,
-//      options,
-//    );
+    //    rows = await this._fillWithRelationsAndFilesForRows(
+    //      rows,
+    //      options,
+    //    );
 
     return { rows, count };
   }
@@ -184,17 +181,13 @@ module.exports = class TrainingDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike(
-            'training',
-            'id',
-            query,
-          ),
+          Utils.ilike('training', 'id', query),
         ],
       };
     }
 
     const records = await db.training.findAll({
-      attributes: [ 'id', 'id' ],
+      attributes: ['id', 'id'],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -205,6 +198,4 @@ module.exports = class TrainingDBApi {
       label: record.id,
     }));
   }
-
 };
-

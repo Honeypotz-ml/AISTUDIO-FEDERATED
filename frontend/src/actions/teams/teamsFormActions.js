@@ -17,14 +17,14 @@ const actions = {
         type: 'TEAMS_FORM_FIND_STARTED',
       });
 
-      axios.get(`/teams/${id}`).then(res => {
+      axios.get(`/teams/${id}`).then((res) => {
         const record = res.data;
 
         dispatch({
           type: 'TEAMS_FORM_FIND_SUCCESS',
           payload: record,
         });
-      })
+      });
     } catch (error) {
       Errors.handle(error);
 
@@ -42,13 +42,13 @@ const actions = {
         type: 'TEAMS_FORM_CREATE_STARTED',
       });
 
-      axios.post('/teams', { data: values }).then(res => {
+      axios.post('/teams', { data: values }).then((res) => {
         dispatch({
           type: 'TEAMS_FORM_CREATE_SUCCESS',
         });
         showSnackbar({ type: 'success', message: 'Teams created' });
         dispatch(push('/admin/teams'));
-      })
+      });
     } catch (error) {
       Errors.handle(error);
 
@@ -58,16 +58,13 @@ const actions = {
     }
   },
 
-  doUpdate: (id, values, isProfile) => async (
-    dispatch,
-    getState,
-  ) => {
+  doUpdate: (id, values, isProfile) => async (dispatch, getState) => {
     try {
       dispatch({
         type: 'TEAMS_FORM_UPDATE_STARTED',
       });
 
-      await axios.put(`/teams/${id}`, {id, data: values});
+      await axios.put(`/teams/${id}`, { id, data: values });
 
       dispatch(doInit());
 

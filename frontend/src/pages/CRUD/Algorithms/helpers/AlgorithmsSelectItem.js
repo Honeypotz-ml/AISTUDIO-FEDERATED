@@ -50,10 +50,7 @@ const AlgorithmsSelectItem = (props) => {
     },
   };
 
-  const {
-    form,
-    ...rest
-  } = props;
+  const { form, ...rest } = props;
 
   return (
     <React.Fragment>
@@ -66,12 +63,10 @@ const AlgorithmsSelectItem = (props) => {
       />
     </React.Fragment>
   );
-}
+};
 
 const select = (state) => ({
-  hasPermissionToCreate: state.algorithms.hasPermissionToCreate
+  hasPermissionToCreate: state.algorithms.hasPermissionToCreate,
 });
 
-export default connect(select)(
-  AlgorithmsSelectItem,
-);
+export default connect(select)(AlgorithmsSelectItem);

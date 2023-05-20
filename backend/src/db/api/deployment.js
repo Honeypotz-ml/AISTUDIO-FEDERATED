@@ -1,4 +1,3 @@
-
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -8,27 +7,26 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class DeploymentDBApi {
-
   static async create(data, options) {
-  const currentUser = (options && options.currentUser) || { id: null };
-  const transaction = (options && options.transaction) || undefined;
+    const currentUser = (options && options.currentUser) || { id: null };
+    const transaction = (options && options.transaction) || undefined;
 
-  const deployment = await db.deployment.create(
-  {
-  id: data.id || undefined,
+    const deployment = await db.deployment.create(
+      {
+        id: data.id || undefined,
 
-  importHash: data.importHash || null,
-  createdById: currentUser.id,
-  updatedById: currentUser.id,
-  },
-  { transaction },
-  );
+        importHash: data.importHash || null,
+        createdById: currentUser.id,
+        updatedById: currentUser.id,
+      },
+      { transaction },
+    );
 
-  return deployment;
+    return deployment;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || {id: null};
+    const currentUser = (options && options.currentUser) || { id: null };
     const transaction = (options && options.transaction) || undefined;
 
     const deployment = await db.deployment.findByPk(id, {
@@ -37,29 +35,31 @@ module.exports = class DeploymentDBApi {
 
     await deployment.update(
       {
-
         updatedById: currentUser.id,
       },
-      {transaction},
+      { transaction },
     );
 
     return deployment;
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || {id: null};
+    const currentUser = (options && options.currentUser) || { id: null };
     const transaction = (options && options.transaction) || undefined;
 
     const deployment = await db.deployment.findByPk(id, options);
 
-    await deployment.update({
-      deletedBy: currentUser.id
-    }, {
-      transaction,
-    });
+    await deployment.update(
+      {
+        deletedBy: currentUser.id,
+      },
+      {
+        transaction,
+      },
+    );
 
     await deployment.destroy({
-      transaction
+      transaction,
     });
 
     return deployment;
@@ -68,16 +68,13 @@ module.exports = class DeploymentDBApi {
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
 
-    const deployment = await db.deployment.findOne(
-      { where },
-      { transaction },
-    );
+    const deployment = await db.deployment.findOne({ where }, { transaction });
 
     if (!deployment) {
       return deployment;
     }
 
-    const output = deployment.get({plain: true});
+    const output = deployment.get({ plain: true });
 
     return output;
   }
@@ -93,9 +90,7 @@ module.exports = class DeploymentDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [
-
-    ];
+    let include = [];
 
     if (filter) {
       if (filter.id) {
@@ -113,9 +108,7 @@ module.exports = class DeploymentDBApi {
       ) {
         where = {
           ...where,
-          active:
-            filter.active === true ||
-            filter.active === 'true',
+          active: filter.active === true || filter.active === 'true',
         };
       }
 
@@ -144,35 +137,39 @@ module.exports = class DeploymentDBApi {
       }
     }
 
-    let { rows, count } = options?.countOnly ? {rows: [], count: await db.deployment.count({
+    let { rows, count } = options?.countOnly
+      ? {
+          rows: [],
+          count: await db.deployment.count({
             where,
             include,
             distinct: true,
             limit: limit ? Number(limit) : undefined,
             offset: offset ? Number(offset) : undefined,
-            order: (filter.field && filter.sort)
+            order:
+              filter.field && filter.sort
                 ? [[filter.field, filter.sort]]
                 : [['createdAt', 'desc']],
             transaction,
-        },
-    )} : await db.deployment.findAndCountAll(
-        {
-            where,
-            include,
-            distinct: true,
-            limit: limit ? Number(limit) : undefined,
-            offset: offset ? Number(offset) : undefined,
-            order: (filter.field && filter.sort)
-                ? [[filter.field, filter.sort]]
-                : [['createdAt', 'desc']],
-            transaction,
-        },
-    );
+          }),
+        }
+      : await db.deployment.findAndCountAll({
+          where,
+          include,
+          distinct: true,
+          limit: limit ? Number(limit) : undefined,
+          offset: offset ? Number(offset) : undefined,
+          order:
+            filter.field && filter.sort
+              ? [[filter.field, filter.sort]]
+              : [['createdAt', 'desc']],
+          transaction,
+        });
 
-//    rows = await this._fillWithRelationsAndFilesForRows(
-//      rows,
-//      options,
-//    );
+    //    rows = await this._fillWithRelationsAndFilesForRows(
+    //      rows,
+    //      options,
+    //    );
 
     return { rows, count };
   }
@@ -184,17 +181,13 @@ module.exports = class DeploymentDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike(
-            'deployment',
-            'id',
-            query,
-          ),
+          Utils.ilike('deployment', 'id', query),
         ],
       };
     }
 
     const records = await db.deployment.findAll({
-      attributes: [ 'id', 'id' ],
+      attributes: ['id', 'id'],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -205,6 +198,4 @@ module.exports = class DeploymentDBApi {
       label: record.id,
     }));
   }
-
 };
-

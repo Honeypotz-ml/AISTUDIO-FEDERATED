@@ -8,7 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
+  return <Slide direction='up' ref={ref} {...props} />;
 });
 
 const Dialog = ({ open, title, onClose, contentText, onSubmit }) => (
@@ -19,13 +19,15 @@ const Dialog = ({ open, title, onClose, contentText, onSubmit }) => (
   >
     <DialogTitle>{title}</DialogTitle>
     <DialogContent>
-      <DialogContentText id="alert-dialog-slide-description">
+      <DialogContentText id='alert-dialog-slide-description'>
         {contentText}
       </DialogContentText>
     </DialogContent>
     <DialogActions>
       <Button onClick={() => onClose()}>Disagree</Button>
-      <Button color="error" onClick={() => onSubmit()}>Agree</Button>
+      <Button color='error' onClick={() => onSubmit()}>
+        Agree
+      </Button>
     </DialogActions>
   </MaterialDialog>
 );

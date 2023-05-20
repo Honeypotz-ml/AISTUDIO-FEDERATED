@@ -1,11 +1,11 @@
-import { makeStyles } from "@mui/styles";
+import { makeStyles } from '@mui/styles';
 
-export default makeStyles(theme => ({
+export default makeStyles((theme) => ({
   codeContainer: {
-    display: props => (props.inline ? "inline-block" : "flex"),
-    flexDirection: props => (props.row ? "row" : "column"),
+    display: (props) => (props.inline ? 'inline-block' : 'flex'),
+    flexDirection: (props) => (props.row ? 'row' : 'column'),
   },
   codeComponent: {
-    flexGrow: props => (props.row ? 0 : 1),
+    flexGrow: (props) => (props.row ? 0 : 1),
   },
 }));

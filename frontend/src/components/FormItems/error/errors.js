@@ -1,8 +1,8 @@
-import { push } from "connected-react-router";
-import { store } from "../../../index";
+import { push } from 'connected-react-router';
+import { store } from '../../../index';
 import { showSnackbar } from '../../Snackbar';
 
-const DEFAULT_ERROR_MESSAGE = "Error";
+const DEFAULT_ERROR_MESSAGE = 'Error';
 
 function selectErrorMessage(error) {
   if (error && error.response && error.response.data) {
@@ -28,13 +28,13 @@ function selectErrorCode(error) {
 
 export default class Errors {
   static handle(error) {
-    if (process.env.NODE_ENV !== "test") {
+    if (process.env.NODE_ENV !== 'test') {
       console.error(selectErrorMessage(error));
       console.error(error);
     }
 
     if (selectErrorCode(error) === 403) {
-      store.dispatch(push("/403"));
+      store.dispatch(push('/403'));
       return;
     }
 
@@ -43,7 +43,7 @@ export default class Errors {
       return;
     }
 
-    store.dispatch(push("/500"));
+    store.dispatch(push('/500'));
   }
 
   static errorCode(error) {

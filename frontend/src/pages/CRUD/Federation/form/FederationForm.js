@@ -26,94 +26,88 @@ import FormValidations from 'components/FormItems/formValidations';
 import Widget from 'components/Widget';
 
 const FederationForm = (props) => {
-
   const {
-  isEditing,
-  isProfile,
-  findLoading,
-  saveLoading,
-  record,
-  onSubmit,
-  onCancel,
-  modal
+    isEditing,
+    isProfile,
+    findLoading,
+    saveLoading,
+    record,
+    onSubmit,
+    onCancel,
+    modal,
   } = props;
 
   const iniValues = () => {
-  return IniValues(federationFields, record || {});
-  }
+    return IniValues(federationFields, record || {});
+  };
 
   const formValidations = () => {
-  return FormValidations(federationFields, record || {});
-  }
+    return FormValidations(federationFields, record || {});
+  };
 
   const handleSubmit = (values) => {
-  const { id, ...data } = PreparedValues(federationFields, values || {});
-  onSubmit(id, data);
+    const { id, ...data } = PreparedValues(federationFields, values || {});
+    onSubmit(id, data);
   };
 
   const title = () => {
-  if(isProfile) {
-  return 'Edit My Profile';
-  }
+    if (isProfile) {
+      return 'Edit My Profile';
+    }
 
-  return isEditing
-  ? 'Edit Federation'
-  : 'Add Federation';
+    return isEditing ? 'Edit Federation' : 'Add Federation';
   };
 
   const renderForm = () => (
-  <Widget title={<h4>{title()}</h4>} collapse close>
-  <Formik
-          onSubmit={handleSubmit}
-  initialValues={iniValues()}
-  validationSchema={formValidations()}
-  >
-  {(form) => (
-  <form onSubmit={form.handleSubmit}>
-    <Grid container spacing={3} direction="column">
-
-  </Grid>
-  <Grid container spacing={3} mt={2}>
-    <Grid item>
-      <Button
-        color="primary"
-        variant="contained"
-        onClick={form.handleSubmit}
+    <Widget title={<h4>{title()}</h4>} collapse close>
+      <Formik
+        onSubmit={handleSubmit}
+        initialValues={iniValues()}
+        validationSchema={formValidations()}
       >
-        Save
-      </Button>
-    </Grid>
-    <Grid item>
-      <Button
-        color="primary"
-        variant="outlined"
-        onClick={form.handleReset}
-      >
-        Reset
-      </Button>
-    </Grid>
-    <Grid item>
-      <Button
-        color="primary"
-        variant="outlined"
-        onClick={() => onCancel()}
-      >
-        Cancel
-      </Button>
-    </Grid>
-  </Grid>
-      </form>
-      )
-      }
-    </Formik>
-  </Widget>
+        {(form) => (
+          <form onSubmit={form.handleSubmit}>
+            <Grid container spacing={3} direction='column'></Grid>
+            <Grid container spacing={3} mt={2}>
+              <Grid item>
+                <Button
+                  color='primary'
+                  variant='contained'
+                  onClick={form.handleSubmit}
+                >
+                  Save
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  color='primary'
+                  variant='outlined'
+                  onClick={form.handleReset}
+                >
+                  Reset
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  color='primary'
+                  variant='outlined'
+                  onClick={() => onCancel()}
+                >
+                  Cancel
+                </Button>
+              </Grid>
+            </Grid>
+          </form>
+        )}
+      </Formik>
+    </Widget>
   );
   if (findLoading) {
-  return <Loader />;
+    return <Loader />;
   }
   if (isEditing && !record) {
-  return <Loader />;
+    return <Loader />;
   }
   return renderForm();
-  }
-  export default FederationForm;
+};
+export default FederationForm;

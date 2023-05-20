@@ -8,13 +8,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 const SelectFormItem = (props) => {
-  const {
-    schema,
-    form,
-    name,
-    hint,
-    errorMessage,
-  } = props;
+  const { schema, form, name, hint, errorMessage } = props;
 
   const { label, options } = schema[name];
 
@@ -32,11 +26,9 @@ const SelectFormItem = (props) => {
       {({ form }) => (
         <>
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">
-              {label}
-            </InputLabel>
+            <InputLabel id='demo-simple-select-label'>{label}</InputLabel>
             <Select
-              labelId="demo-simple-select-label"
+              labelId='demo-simple-select-label'
               label={label}
               value={form.values[name] || ''}
               onChange={handleChange}
@@ -44,11 +36,7 @@ const SelectFormItem = (props) => {
               name={name}
             >
               {options.map((option) => {
-                return (
-                  <MenuItem value={option.value}>
-                    { option.label }
-                  </MenuItem>
-                )
+                return <MenuItem value={option.value}>{option.label}</MenuItem>;
               })}
             </Select>
 

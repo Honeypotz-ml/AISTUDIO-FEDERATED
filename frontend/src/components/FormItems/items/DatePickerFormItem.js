@@ -7,7 +7,6 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import TextField from '@mui/material/TextField';
 import FormErrors from 'components/FormItems/formErrors';
 
-
 const DatePickerFormItem = (props) => {
   const {
     name,
@@ -46,7 +45,7 @@ const DatePickerFormItem = (props) => {
             </div>
             {!!hint && <small className='form-text text-muted'>{hint}</small>}
           </div>
-        )
+        );
       }}
     </FastField>
   );

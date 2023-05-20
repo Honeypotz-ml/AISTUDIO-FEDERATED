@@ -98,7 +98,9 @@ function Login(props) {
       <div className={classes.logotypeContainer}>
         <img src={logo} alt='logo' className={classes.logotypeImage} />
         <Typography className={classes.logotypeText}>
-         <Typography className={classes.logotypeText}>AISTUDIO FEDERATED</Typography>
+          <Typography className={classes.logotypeText}>
+            AISTUDIO FEDERATED
+          </Typography>
         </Typography>
       </div>
       <div

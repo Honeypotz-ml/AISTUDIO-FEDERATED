@@ -1,7 +1,7 @@
-import React from "react";
-import axios from "axios";
+import React from 'react';
+import axios from 'axios';
 import { mockUser } from './mock';
-import config from "../../src/config";
+import config from '../../src/config';
 import { showSnackbar } from '../components/Snackbar';
 
 async function list() {
@@ -19,9 +19,8 @@ const initialData = {
   count: null,
   loading: false,
   idToDelete: null,
-  modalOpen: false
+  modalOpen: false,
 };
-
 
 function managementReducer(state = initialData, { type, payload }) {
   if (type === 'USERS_FORM_RESET') {
@@ -148,7 +147,7 @@ function managementReducer(state = initialData, { type, payload }) {
       ...state,
       loading: false,
       modalOpen: true,
-      idToDelete: payload.id
+      idToDelete: payload.id,
     };
   }
 
@@ -161,8 +160,7 @@ function managementReducer(state = initialData, { type, payload }) {
   }
 
   return state;
-};
-
+}
 
 function ManagementProvider({ children }) {
   let [state, dispatch] = React.useReducer(managementReducer, {
@@ -172,7 +170,7 @@ function ManagementProvider({ children }) {
     rows: [],
     loading: false,
     idToDelete: null,
-    modalOpen: false
+    modalOpen: false,
   });
 
   return (
@@ -187,7 +185,9 @@ function ManagementProvider({ children }) {
 function useManagementState() {
   let context = React.useContext(ManagementStateContext);
   if (context === undefined) {
-    throw new Error("useManagementState must be used within a ManagementProvider");
+    throw new Error(
+      'useManagementState must be used within a ManagementProvider',
+    );
   }
   return context;
 }
@@ -195,13 +195,20 @@ function useManagementState() {
 function useManagementDispatch() {
   let context = React.useContext(ManagementDispatchContext);
   if (context === undefined) {
-    throw new Error("useManagementDispatch must be used within a ManagementProvider");
+    throw new Error(
+      'useManagementDispatch must be used within a ManagementProvider',
+    );
   }
   return context;
 }
 
 // eslint-disable-next-line no-use-before-define
-export { ManagementProvider, useManagementState, useManagementDispatch, actions };
+export {
+  ManagementProvider,
+  useManagementState,
+  useManagementDispatch,
+  actions,
+};
 
 // ###########################################################
 
@@ -224,20 +231,19 @@ const actions = {
           type: 'USERS_FORM_FIND_STARTED',
         });
 
-        axios.get(`/users/${id}`).then(res => {
+        axios.get(`/users/${id}`).then((res) => {
           const currentUser = res.data;
           dispatch({
             type: 'USERS_FORM_FIND_SUCCESS',
             payload: currentUser,
           });
-        })
+        });
       } catch (error) {
         showSnackbar({ type: 'error', message: 'Error' });
-        console.log(error)
+        console.log(error);
         dispatch({
           type: 'USERS_FORM_FIND_ERROR',
         });
-
       }
     }
   },
@@ -247,40 +253,37 @@ const actions = {
       dispatch({
         type: 'USERS_FORM_CREATE_STARTED',
       });
-      axios.post('/users', { data: values }).then(res => {
+      axios.post('/users', { data: values }).then((res) => {
         dispatch({
           type: 'USERS_FORM_CREATE_SUCCESS',
         });
         history.push('/app/user/list');
-      })
+      });
     } catch (error) {
-      showSnackbar({ type: "error", message: "Error" });
-      console.log(error)
+      showSnackbar({ type: 'error', message: 'Error' });
+      console.log(error);
       dispatch({
         type: 'USERS_FORM_CREATE_ERROR',
       });
     }
   },
 
-  doUpdate: (id, values, history) => async (
-    dispatch,
-    getState,
-  ) => {
+  doUpdate: (id, values, history) => async (dispatch, getState) => {
     try {
       dispatch({
         type: 'USERS_FORM_UPDATE_STARTED',
       });
 
-      await axios.put(`/users/${id}`, {id, data: values});
+      await axios.put(`/users/${id}`, { id, data: values });
 
       dispatch({
         type: 'USERS_FORM_UPDATE_SUCCESS',
-        payload: values
+        payload: values,
       });
 
-      history.push('/admin/dashboard')
+      history.push('/admin/dashboard');
     } catch (error) {
-      console.log(error)
+      console.log(error);
 
       dispatch({
         type: 'USERS_FORM_UPDATE_ERROR',
@@ -288,63 +291,69 @@ const actions = {
     }
   },
 
-  doChangePassword: ({newPassword, currentPassword}) => async (dispatch) => {
-    try {
-      dispatch({
-        type: 'USERS_FORM_CREATE_STARTED',
-      });
-      await axios.put('/auth/password-update', {newPassword, currentPassword})
-      dispatch({
-        type: 'USERS_PASSWORD_UPDATE_SUCCESS',
-      });
-
-      showSnackbar({ type: 'success', message: 'Password updated' });
-
-    } catch (error) {
-      showSnackbar({ type: 'error', message: 'Error' });
-      console.log(error)
-
-      dispatch({
-        type: 'USERS_FORM_CREATE_ERROR',
-      });
-    }
-  },
-
-  doFetch: (filter, keepPagination = false) => async (dispatch) => {
-    if (!config.isBackend) {
-      dispatch({
-        type: 'USERS_LIST_FETCH_SUCCESS',
-        payload: {
-          rows: [mockUser],
-          count: 1,
-        },
-      });
-    } else {
+  doChangePassword:
+    ({ newPassword, currentPassword }) =>
+    async (dispatch) => {
       try {
         dispatch({
-          type: 'USERS_LIST_FETCH_STARTED',
-          payload: { filter, keepPagination },
+          type: 'USERS_FORM_CREATE_STARTED',
+        });
+        await axios.put('/auth/password-update', {
+          newPassword,
+          currentPassword,
+        });
+        dispatch({
+          type: 'USERS_PASSWORD_UPDATE_SUCCESS',
         });
 
-        const response = await list();
+        showSnackbar({ type: 'success', message: 'Password updated' });
+      } catch (error) {
+        showSnackbar({ type: 'error', message: 'Error' });
+        console.log(error);
 
+        dispatch({
+          type: 'USERS_FORM_CREATE_ERROR',
+        });
+      }
+    },
+
+  doFetch:
+    (filter, keepPagination = false) =>
+    async (dispatch) => {
+      if (!config.isBackend) {
         dispatch({
           type: 'USERS_LIST_FETCH_SUCCESS',
           payload: {
-            rows: response.rows,
-            count: response.count,
+            rows: [mockUser],
+            count: 1,
           },
         });
-      } catch (error) {
-        showSnackbar({ type: 'error', message: 'Error' });
-        console.log(error)
+      } else {
+        try {
+          dispatch({
+            type: 'USERS_LIST_FETCH_STARTED',
+            payload: { filter, keepPagination },
+          });
 
-        dispatch({
-          type: 'USERS_LIST_FETCH_ERROR',
-        });
+          const response = await list();
+
+          dispatch({
+            type: 'USERS_LIST_FETCH_SUCCESS',
+            payload: {
+              rows: response.rows,
+              count: response.count,
+            },
+          });
+        } catch (error) {
+          showSnackbar({ type: 'error', message: 'Error' });
+          console.log(error);
+
+          dispatch({
+            type: 'USERS_LIST_FETCH_ERROR',
+          });
+        }
       }
-    }
-  },
+    },
 
   doDelete: (id) => async (dispatch) => {
     if (!config.isBackend) {
@@ -357,7 +366,7 @@ const actions = {
           type: 'USERS_LIST_DELETE_STARTED',
         });
 
-        await axios.delete(`/users/${id}`)
+        await axios.delete(`/users/${id}`);
 
         dispatch({
           type: 'USERS_LIST_DELETE_SUCCESS',
@@ -370,10 +379,9 @@ const actions = {
             count: response.count,
           },
         });
-
       } catch (error) {
-        showSnackbar({ type: "error", message: "Error" });
-        console.log(error)
+        showSnackbar({ type: 'error', message: 'Error' });
+        console.log(error);
         dispatch({
           type: 'USERS_LIST_DELETE_ERROR',
         });
@@ -381,16 +389,16 @@ const actions = {
     }
   },
   doOpenConfirm: (id) => async (dispatch) => {
-      dispatch({
-        type: 'USERS_LIST_OPEN_CONFIRM',
-        payload: {
-          id: id
-        },
-      });
+    dispatch({
+      type: 'USERS_LIST_OPEN_CONFIRM',
+      payload: {
+        id: id,
+      },
+    });
   },
   doCloseConfirm: () => async (dispatch) => {
-      dispatch({
-        type: 'USERS_LIST_CLOSE_CONFIRM',
-      });
+    dispatch({
+      type: 'USERS_LIST_CLOSE_CONFIRM',
+    });
   },
 };

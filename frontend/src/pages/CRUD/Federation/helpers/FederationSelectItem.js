@@ -50,10 +50,7 @@ const FederationSelectItem = (props) => {
     },
   };
 
-  const {
-    form,
-    ...rest
-  } = props;
+  const { form, ...rest } = props;
 
   return (
     <React.Fragment>
@@ -66,12 +63,10 @@ const FederationSelectItem = (props) => {
       />
     </React.Fragment>
   );
-}
+};
 
 const select = (state) => ({
-  hasPermissionToCreate: state.federation.hasPermissionToCreate
+  hasPermissionToCreate: state.federation.hasPermissionToCreate,
 });
 
-export default connect(select)(
-  FederationSelectItem,
-);
+export default connect(select)(FederationSelectItem);

@@ -50,10 +50,7 @@ const TrainingSelectItem = (props) => {
     },
   };
 
-  const {
-    form,
-    ...rest
-  } = props;
+  const { form, ...rest } = props;
 
   return (
     <React.Fragment>
@@ -66,12 +63,10 @@ const TrainingSelectItem = (props) => {
       />
     </React.Fragment>
   );
-}
+};
 
 const select = (state) => ({
-  hasPermissionToCreate: state.training.hasPermissionToCreate
+  hasPermissionToCreate: state.training.hasPermissionToCreate,
 });
 
-export default connect(select)(
-  TrainingSelectItem,
-);
+export default connect(select)(TrainingSelectItem);

@@ -1,4 +1,3 @@
-
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -8,27 +7,26 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class FederationDBApi {
-
   static async create(data, options) {
-  const currentUser = (options && options.currentUser) || { id: null };
-  const transaction = (options && options.transaction) || undefined;
+    const currentUser = (options && options.currentUser) || { id: null };
+    const transaction = (options && options.transaction) || undefined;
 
-  const federation = await db.federation.create(
-  {
-  id: data.id || undefined,
+    const federation = await db.federation.create(
+      {
+        id: data.id || undefined,
 
-  importHash: data.importHash || null,
-  createdById: currentUser.id,
-  updatedById: currentUser.id,
-  },
-  { transaction },
-  );
+        importHash: data.importHash || null,
+        createdById: currentUser.id,
+        updatedById: currentUser.id,
+      },
+      { transaction },
+    );
 
-  return federation;
+    return federation;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || {id: null};
+    const currentUser = (options && options.currentUser) || { id: null };
     const transaction = (options && options.transaction) || undefined;
 
     const federation = await db.federation.findByPk(id, {
@@ -37,29 +35,31 @@ module.exports = class FederationDBApi {
 
     await federation.update(
       {
-
         updatedById: currentUser.id,
       },
-      {transaction},
+      { transaction },
     );
 
     return federation;
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || {id: null};
+    const currentUser = (options && options.currentUser) || { id: null };
     const transaction = (options && options.transaction) || undefined;
 
     const federation = await db.federation.findByPk(id, options);
 
-    await federation.update({
-      deletedBy: currentUser.id
-    }, {
-      transaction,
-    });
+    await federation.update(
+      {
+        deletedBy: currentUser.id,
+      },
+      {
+        transaction,
+      },
+    );
 
     await federation.destroy({
-      transaction
+      transaction,
     });
 
     return federation;
@@ -68,16 +68,13 @@ module.exports = class FederationDBApi {
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
 
-    const federation = await db.federation.findOne(
-      { where },
-      { transaction },
-    );
+    const federation = await db.federation.findOne({ where }, { transaction });
 
     if (!federation) {
       return federation;
     }
 
-    const output = federation.get({plain: true});
+    const output = federation.get({ plain: true });
 
     return output;
   }
@@ -93,9 +90,7 @@ module.exports = class FederationDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [
-
-    ];
+    let include = [];
 
     if (filter) {
       if (filter.id) {
@@ -113,9 +108,7 @@ module.exports = class FederationDBApi {
       ) {
         where = {
           ...where,
-          active:
-            filter.active === true ||
-            filter.active === 'true',
+          active: filter.active === true || filter.active === 'true',
         };
       }
 
@@ -144,35 +137,39 @@ module.exports = class FederationDBApi {
       }
     }
 
-    let { rows, count } = options?.countOnly ? {rows: [], count: await db.federation.count({
+    let { rows, count } = options?.countOnly
+      ? {
+          rows: [],
+          count: await db.federation.count({
             where,
             include,
             distinct: true,
             limit: limit ? Number(limit) : undefined,
             offset: offset ? Number(offset) : undefined,
-            order: (filter.field && filter.sort)
+            order:
+              filter.field && filter.sort
                 ? [[filter.field, filter.sort]]
                 : [['createdAt', 'desc']],
             transaction,
-        },
-    )} : await db.federation.findAndCountAll(
-        {
-            where,
-            include,
-            distinct: true,
-            limit: limit ? Number(limit) : undefined,
-            offset: offset ? Number(offset) : undefined,
-            order: (filter.field && filter.sort)
-                ? [[filter.field, filter.sort]]
-                : [['createdAt', 'desc']],
-            transaction,
-        },
-    );
+          }),
+        }
+      : await db.federation.findAndCountAll({
+          where,
+          include,
+          distinct: true,
+          limit: limit ? Number(limit) : undefined,
+          offset: offset ? Number(offset) : undefined,
+          order:
+            filter.field && filter.sort
+              ? [[filter.field, filter.sort]]
+              : [['createdAt', 'desc']],
+          transaction,
+        });
 
-//    rows = await this._fillWithRelationsAndFilesForRows(
-//      rows,
-//      options,
-//    );
+    //    rows = await this._fillWithRelationsAndFilesForRows(
+    //      rows,
+    //      options,
+    //    );
 
     return { rows, count };
   }
@@ -184,17 +181,13 @@ module.exports = class FederationDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike(
-            'federation',
-            'id',
-            query,
-          ),
+          Utils.ilike('federation', 'id', query),
         ],
       };
     }
 
     const records = await db.federation.findAll({
-      attributes: [ 'id', 'id' ],
+      attributes: ['id', 'id'],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -205,6 +198,4 @@ module.exports = class FederationDBApi {
       label: record.id,
     }));
   }
-
 };
-

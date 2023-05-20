@@ -30,134 +30,125 @@ import TeamsSelectItem from 'pages/CRUD/Teams/helpers/TeamsSelectItem';
 import UsersSelectItem from 'pages/CRUD/Users/helpers/UsersSelectItem';
 
 const AlgorithmsForm = (props) => {
-
   const {
-  isEditing,
-  isProfile,
-  findLoading,
-  saveLoading,
-  record,
-  onSubmit,
-  onCancel,
-  modal
+    isEditing,
+    isProfile,
+    findLoading,
+    saveLoading,
+    record,
+    onSubmit,
+    onCancel,
+    modal,
   } = props;
 
   const iniValues = () => {
-  return IniValues(algorithmsFields, record || {});
-  }
+    return IniValues(algorithmsFields, record || {});
+  };
 
   const formValidations = () => {
-  return FormValidations(algorithmsFields, record || {});
-  }
+    return FormValidations(algorithmsFields, record || {});
+  };
 
   const handleSubmit = (values) => {
-  const { id, ...data } = PreparedValues(algorithmsFields, values || {});
-  onSubmit(id, data);
+    const { id, ...data } = PreparedValues(algorithmsFields, values || {});
+    onSubmit(id, data);
   };
 
   const title = () => {
-  if(isProfile) {
-  return 'Edit My Profile';
-  }
+    if (isProfile) {
+      return 'Edit My Profile';
+    }
 
-  return isEditing
-  ? 'Edit Algorithms'
-  : 'Add Algorithms';
+    return isEditing ? 'Edit Algorithms' : 'Add Algorithms';
   };
 
   const renderForm = () => (
-  <Widget title={<h4>{title()}</h4>} collapse close>
-  <Formik
-          onSubmit={handleSubmit}
-  initialValues={iniValues()}
-  validationSchema={formValidations()}
-  >
-  {(form) => (
-  <form onSubmit={form.handleSubmit}>
-    <Grid container spacing={3} direction="column">
-
-      <Grid item>
-        <InputFormItem
-          name={'algorithm_name'}
-          schema={algorithmsFields}
-
-            autoFocus
-
-        />
-      </Grid>
-
-      <Grid item>
-        <InputFormItem
-          multiline
-          wysiwyg
-          name={'description'}
-          schema={algorithmsFields}
-
-        />
-      </Grid>
-
-      <Grid item>
-        <TeamsSelectItem
-        name={'teams'}
-        schema={algorithmsFields}
-        showCreate={!modal}
-        multiple
-        form={form}
-        />
-      </Grid>
-
-      <Grid item>
-        <UsersSelectItem
-        name={'users'}
-        schema={algorithmsFields}
-        showCreate={!modal}
-        multiple
-        form={form}
-        />
-      </Grid>
-
-  </Grid>
-  <Grid container spacing={3} mt={2}>
-    <Grid item>
-      <Button
-        color="primary"
-        variant="contained"
-        onClick={form.handleSubmit}
+    <Widget title={<h4>{title()}</h4>} collapse close>
+      <Formik
+        onSubmit={handleSubmit}
+        initialValues={iniValues()}
+        validationSchema={formValidations()}
       >
-        Save
-      </Button>
-    </Grid>
-    <Grid item>
-      <Button
-        color="primary"
-        variant="outlined"
-        onClick={form.handleReset}
-      >
-        Reset
-      </Button>
-    </Grid>
-    <Grid item>
-      <Button
-        color="primary"
-        variant="outlined"
-        onClick={() => onCancel()}
-      >
-        Cancel
-      </Button>
-    </Grid>
-  </Grid>
-      </form>
-      )
-      }
-    </Formik>
-  </Widget>
+        {(form) => (
+          <form onSubmit={form.handleSubmit}>
+            <Grid container spacing={3} direction='column'>
+              <Grid item>
+                <InputFormItem
+                  name={'algorithm_name'}
+                  schema={algorithmsFields}
+                  autoFocus
+                />
+              </Grid>
+
+              <Grid item>
+                <InputFormItem
+                  multiline
+                  wysiwyg
+                  name={'description'}
+                  schema={algorithmsFields}
+                />
+              </Grid>
+
+              <Grid item>
+                <TeamsSelectItem
+                  name={'teams'}
+                  schema={algorithmsFields}
+                  showCreate={!modal}
+                  multiple
+                  form={form}
+                />
+              </Grid>
+
+              <Grid item>
+                <UsersSelectItem
+                  name={'users'}
+                  schema={algorithmsFields}
+                  showCreate={!modal}
+                  multiple
+                  form={form}
+                />
+              </Grid>
+            </Grid>
+            <Grid container spacing={3} mt={2}>
+              <Grid item>
+                <Button
+                  color='primary'
+                  variant='contained'
+                  onClick={form.handleSubmit}
+                >
+                  Save
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  color='primary'
+                  variant='outlined'
+                  onClick={form.handleReset}
+                >
+                  Reset
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  color='primary'
+                  variant='outlined'
+                  onClick={() => onCancel()}
+                >
+                  Cancel
+                </Button>
+              </Grid>
+            </Grid>
+          </form>
+        )}
+      </Formik>
+    </Widget>
   );
   if (findLoading) {
-  return <Loader />;
+    return <Loader />;
   }
   if (isEditing && !record) {
-  return <Loader />;
+    return <Loader />;
   }
   return renderForm();
-  }
-  export default AlgorithmsForm;
+};
+export default AlgorithmsForm;

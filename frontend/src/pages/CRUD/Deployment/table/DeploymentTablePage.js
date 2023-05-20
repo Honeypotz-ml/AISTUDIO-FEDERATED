@@ -7,6 +7,6 @@ const DeploymentTablePage = () => {
       <DeploymentTable />
     </div>
   );
-}
+};
 
 export default DeploymentTablePage;

@@ -7,6 +7,6 @@ const TeamsTablePage = () => {
       <TeamsTable />
     </div>
   );
-}
+};
 
 export default TeamsTablePage;
